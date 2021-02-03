@@ -1,3 +1,4 @@
+# 210201
 # 3431. 준환이의 운동관리
 T = int(input())
 for i in range(T):
@@ -91,5 +92,33 @@ for i in range(1, T+1):
 4. 만약 score가 40 미만이면 40을 append
 5. 그렇지 않으면 원래 점수 append
 6. 평균 내서 반환
+'''
+
+# 210203
+# 1213. [S/W 문제해결 기본] 3일차 - String
+for i in range(1, 11):
+    N = input()
+    chars = ''
+    sentence = ''
+    result = 0
+    chars += input()
+    sentence += input()
+    for j in range(len(sentence)):
+        if sentence[j:j+len(chars)] == chars:
+            result += 1
+    print(f"#{i} {result}")
+
+'''
+< logic >
+1. input 처리를 좀 고민해봤음
+2. 우선 테스트케이스가 10개이므로 for문으로 10번 반복
+3. 첫번째 input은 N에 저장(별로 쓸데 없음)
+4. 두번째 input은 문자열이므로 빈 문자열 chars에 저장
+5. 세번째 input은 문장이므로 빈 문자열 sentence에 저장
+6. 겹치는 횟수 셀 result 초기화
+7. 문장의 첫글자부터 시작하여 chars의 길이만큼 slicing
+8. 만약 슬라이싱한게 chars와 일치한다면 result에 1 카운트
+9. result를 반환!
+* 처음엔 리스트 extend 하려고 했으나, 굳이 그럴 필요 없는듯. 오히려 더 복잡해짐.
 '''
 
