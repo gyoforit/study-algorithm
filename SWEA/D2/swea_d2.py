@@ -70,7 +70,8 @@ for i in range(1, T+1):
 # N = 'TWFu'
 # for char in N:
 #     print(ord(char))
-    
+
+# 210204  
 # 1986. 지그재그 숫자
 T = int(input())
 for i in range(1, T+1):
@@ -102,30 +103,57 @@ for i in range(1, T+1):
 # 1288. 새로운 불면증 치료법
 T = int(input())
 for i in range(1, T+1):
-    N = int(input()) #1
+    N = int(input())
     numbers = set()
+    count = 0
     while len(numbers) < 10:
-        count = 0
         count += 1
-        N = N*count
+        M = N*count
         num = []
-        num.extend(str(N))
+        num.extend(str(M))
         for idx in range(len(num)):
-            numbers.add(int(num[idx]))
-    print(count)
+            numbers.update(num)
+    print(N*count)
+# 이것도 문제 좀 제대로....ㅠㅠ
+
+# 채은님 풀이(list에 넣어서 set 변환하면 어차피 중복된거 빠짐)
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    cn = 1
+    lst = []
+    while set(lst) != set(range(10)):
+        for n in str(N * cn):
+            lst.append(int(n))
+        cn += 1
+    print(f'#{t} {(cn-1) * N} ')
+
+# 주엽님 아이디어 활용 (숫자 없애기)
+T = int(input())
+for i in range(1,T+1):
+    count = 0
+    N = input()
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    while numbers != []:
+        count += 1
+        M = str(int(N)*count)
+        for num in M:
+            if int(num) in numbers:
+                numbers.remove(int(num))
+    print(f"#{i} {int(N)*count}")
 
 # 1989. 초심자의 회문 검사
 T = int(input())
 for i in range(1, T+1):
     chars = input()
-    while len(chars) < 2:
+    while len(chars) > 2:
         if chars[0] != chars[-1]:
             print(f"#{i} 0")
             break
         else:
             chars = chars[1:-1]
-    print(f"#{i} 1")
-# if문을 while문 안에?!
+    else:
+        print(f"#{i} 1")
 
 # 1959. 두 개의 숫자열
 # 1948. 날짜 계산기
