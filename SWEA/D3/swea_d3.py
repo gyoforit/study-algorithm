@@ -122,3 +122,63 @@ for i in range(1, 11):
 * 처음엔 리스트 extend 하려고 했으나, 굳이 그럴 필요 없는듯. 오히려 더 복잡해짐.
 '''
 
+# 210205
+# 11387. 몬스터 사냥
+T = int(input())
+for i in range(1, T+1):
+    D, L, N = map(int, input().split())
+    total = 0
+    for j in range(N):
+        total += D*(1+j*L*0.01)
+    print(f"#{i} {int(total)}")
+
+# 10912. 외로운 문자
+T = int(input())
+for i in range(1, T+1):
+    chars = []
+    result = {}
+    answer = []
+    chars.extend(input())
+    # dict에 {키: 센 횟수}
+    for char in chars:
+        if char in result.keys():
+            result[char] += 1
+        else:
+            result[char] = 1
+    # value가 홀수면 중복되지 않은 하나 있는거니까 list에 append
+    for key in result.keys():
+        if result[key] % 2:
+            answer.append(key)
+
+    if answer == []:
+        print(f"#{i} Good")
+    else:
+        answer.sort()
+        print(f"#{i} {''.join(answer)}")
+
+# 영주님 풀이
+for t in range(1, int(input())+1):
+    sentence = input()
+    result = ''
+    for digit in sentence:
+        count = sentence.count(digit)
+        if (count == 1) or ((count % 2) and (digit not in result)):
+            result += digit
+    
+    if result:
+        sorted_result = ''.join(sorted(list(result)))
+        print(f'#{t} {sorted_result}')
+    else:
+        print(f'#{t} Good')
+
+# 호근님 풀이
+T = int(input())
+for test_case in range(1, T + 1):
+    check = set()
+    word = input()
+    for ch in word:
+        if ch in check:
+            check.remove(ch)
+        else:
+            check.add(ch)
+    print('#{} {}'.format(test_case, 'Good' if len(check) == 0 else ''.join(sorted(check))))
