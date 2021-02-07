@@ -182,3 +182,48 @@ for test_case in range(1, T + 1):
         else:
             check.add(ch)
     print('#{} {}'.format(test_case, 'Good' if len(check) == 0 else ''.join(sorted(check))))
+
+# 210207
+# 5431. 민석이의 과제 체크하기
+'''
+< logic >
+1. 1~N 있는 리스트 students 생성
+2. 제출한 학생들을 리스트로 받아서 하나씩 students에서 제거
+(remove 써도 되는 이유? 중복되는 번호 없다고 했으니까)
+3. 남은 students 요소들을 print
+'''
+T = int(input())
+for i in range(1, T+1):
+    N, K = map(int, input().split())
+    students = []
+    for num in range(1, N+1):
+        students.append(str(num))
+    submit = list(map(int, input().split()))
+    for n in submit:
+        students.remove(str(n))
+    print(f"#{i} {' '.join(students)}")
+
+# 5549. 홀수일까 짝수일까
+T = int(input())
+for i in range(1, T+1):
+    if int(input()) % 2:
+        print(f"#{i} Odd")
+    else:
+        print(f"#{i} Even")
+
+# 9700. USB 꽂기의 미스테리
+'''
+p의 확률로 올바른 면으로 꽂음 / (1-p) 로 뒤집어서
+올바른 면으로 꽂았을 때 -> q의 확률로 정상적으로 꽂힘
+뒤집어서 꽂았을 때 -> 100% 안 꽂힘
+s1: 한번 뒤집었을 때 usb가 꽂힐 확률 / 처음에 거꾸로. (1-p)*q
+s2: 두번 뒤집었을 때 꽂힐 확률 / 올바르게but실패->거꾸로->올바르게 / p*(1-q)*q
+< 중요한 것 > 뒤집어서 낄 때 확률은 안 곱해도 됨! 왜냐 100% 뒤집어서 끼니까
+'''
+T = int(input())
+for i in range(1, T+1):
+    p, q = map(float, input().split())
+    if (1-p)*q < p*(1-q)*q:
+        print(f"#{i} YES")
+    else:
+        print(f"#{i} NO")
