@@ -155,7 +155,41 @@ for i in range(1, T+1):
     else:
         print(f"#{i} 1")
 
-# 1959. 두 개의 숫자열
-# 1948. 날짜 계산기
-# 2007. 패턴 마디의 길이
-# 1979. 어디에 단어가 들어갈 수 있을까
+# 210208
+# 1966. 숫자를 정렬하자
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    nb = list(map(int, input().split()))
+    result = ''
+    for i in range(0, N-1):
+        for j in range(i+1, N):
+            if nb[i] > nb[j]:
+                nb[j], nb[i] = nb[i], nb[j]
+    for a in range(len(nb)):
+        nb[a] = str(nb[a])
+    result = ' '.join(nb)
+    print('#%d %s' % (t, result))
+
+# 1970. 쉬운 거스름돈
+'''
+단위별로 돌아가며 N과 비교.
+N이 더 크면 N으로 나눈 몫을 count (해당 돈의 개수니까)
+그리고 나머지를 다시 N에다 집어넣음
+'''
+T = int(input())
+for t in range(1, T+1):
+    N = int(input()) #32850
+    mn = [50000, 10000, 5000, 1000, 500, 100, 50, 10]
+    result = [0, 0, 0, 0, 0, 0, 0, 0]
+    ans = ''
+    for i in range(len(mn)):
+        if N >= mn[i]:
+            result[i] = N // mn[i]
+            N = N % mn[i]
+        else:
+            result[i] = 0
+    for n in range(len(result)):
+        result[n] = str(result[n])
+    ans = ' '.join(result)
+    print('#%d\n%s' % (t, ans))

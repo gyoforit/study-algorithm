@@ -227,3 +227,39 @@ for i in range(1, T+1):
         print(f"#{i} YES")
     else:
         print(f"#{i} NO")
+
+# 210208
+# 1206. [S/W 문제해결 기본] 1일차 - View
+'''
+알아보고자 하는 건물을 i라고 가정
+i-1, i-2(왼쪽) i+1, i+2(오른쪽)
+각 방향당 i와의 차이가 둘다 0보다 크다 -> 조망권이 있다
+최솟값을 구해서 더함
+'''
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    buildings = list(map(int, input().split()))
+    count = 0
+    for i in range(2, len(buildings)-2):
+        mn1 = 0
+        mn2 = 0
+        a = buildings[i] - buildings[i-1]
+        b = buildings[i] - buildings[i-2]
+        if a > 0 and b > 0:
+            if a < b:
+                mn1 = a
+            else:
+                mn1 = b
+        c = buildings[i] - buildings[i+1]
+        d = buildings[i] - buildings[i+2]
+        if c > 0 and d > 0:
+            if c < d:
+                mn2 = c
+            else:
+                mn2 = d
+        if mn1 < mn2:
+            count += mn1
+        else:
+            count += mn2
+    print(count)
