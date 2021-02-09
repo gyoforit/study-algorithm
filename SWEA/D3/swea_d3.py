@@ -263,3 +263,49 @@ for t in range(1, T+1):
         else:
             count += mn2
     print(count)
+
+# 210209
+# 1208. [S/W 문제해결 기본] 1일차 - Flatten
+for t in range(1, 11):
+    N = int(input())
+    box = list(map(int, input().split()))
+    # 최대, 최소의 index를 0번째로 초기화
+    mx = 0
+    mn = 0
+    # 첫 리스트에서 최대, 최소의 index 설정
+    for idx in range(100):
+        if box[idx] > box[mx]:
+            mx = idx
+        elif box[idx] < box[mn]:
+            mn = idx
+
+    for i in range(1, N+1): # 덤프 횟수
+        box[mx] -= 1
+        box[mn] += 1
+        for idx in range(100):
+            if box[idx] > box[mx]:
+                mx = idx
+            elif box[idx] < box[mn]:
+                mn = idx
+
+    print('#%d %d' % (t, (box[mx] - box[mn])))
+
+# 5789. 현주의 상자 바꾸기
+'''
+1부터 N번까지의 상자.
+Q회 동안 숫자 변경할거임
+범위는 L번부터 R번까지 i(1<=i<=Q)로 변경
+'''
+T = int(input())
+for t in range(1, T+1):
+    N, Q = map(int, input().split())
+    result = ''
+    box = [0] * N
+    for q in range(1, Q+1): # Q개의 작업
+        L, R = map(int, input().split()) #인덱스로 따지면 L-1 ~ R-1
+        for a in range(L-1, R):
+            box[a] = q
+    for i in range(len(box)):
+        box[i] = str(box[i])
+    result = ' '.join(box)
+    print('#%d %s' % (t, result))
