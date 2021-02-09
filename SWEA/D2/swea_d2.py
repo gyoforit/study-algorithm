@@ -193,3 +193,31 @@ for t in range(1, T+1):
         result[n] = str(result[n])
     ans = ' '.join(result)
     print('#%d\n%s' % (t, ans))
+
+# 210209
+# 1948. 날짜계산기
+'''
+월/일을 단순히 일로만 계산하는 함수 작성
+'''
+def howmanydate(m, d):
+    result = 0
+    if m == 1:
+        return d
+    else:
+        a = 1
+        while a < m:
+            if a in [1, 3, 5, 7, 8, 10, 12]:
+                result += 31
+                a += 1
+            elif a in [4, 6, 9, 11]:
+                result += 30
+                a += 1
+            elif a == 2:
+                result += 28
+                a += 1
+        return result + d
+
+T = int(input())
+for t in range(1, T+1):
+    m1, d1, m2, d2 = map(int, input().split())
+    print(f'#{t} {howmanydate(m2, d2) - howmanydate(m1, d1) + 1}')
