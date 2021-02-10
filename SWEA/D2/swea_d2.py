@@ -221,3 +221,52 @@ T = int(input())
 for t in range(1, T+1):
     m1, d1, m2, d2 = map(int, input().split())
     print(f'#{t} {howmanydate(m2, d2) - howmanydate(m1, d1) + 1}')
+
+# 210210
+# 1959. 두 개의 숫자열
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split()) # M이 크다고 가정!
+    Nlist = list(map(int, input().split()))
+    Mlist = list(map(int, input().split()))
+    if N > M:
+        N, M = M, N
+        Nlist, Mlist = Mlist, Nlist
+
+    mx = float('-inf')
+    for i in range(0, M-N+1): # C의 초깃값
+        C = []
+        for j in range(i, i+N):
+            C += [Mlist[j]]
+
+        tmp = 0
+        for a in range(N):
+            tmp += Nlist[a] * C[a]
+        if tmp > mx:
+            mx = tmp
+    print('#%d %d' % (t, mx))
+
+# 다른 풀이
+def check(long, short):
+    max_value = -987654321
+    for i in range(len(long)-len(short)+1): # 큰 숫자열을 작은 숫자열 길이만큼 자를건데 그 시작 부분의 pointer 역할
+        result = 0 # for 문 안에서 초기화를 해야 함. 매 pointer가 바뀔 때마다 새롭게 곱할 값의 합을 알아봐야 하니깐!
+        for j in range(len(short)): # 작은 숫자열의 인덱스 차례로 돌면서
+            result += long[i+j]*short[j] # 곱한다! 큰 숫자열에는 위에서 구한 시작점을 더해줘서 매 싸이클 마다 달라지게..
+
+        if max_value < result:
+            max_value = result
+    return max_value
+
+T = int(input())
+for tc in range(1, T+1):
+    N, M = map(int, input().split())
+    A = list(map(int, input().split()))
+    B = list(map(int, input().split()))
+
+    if N > M:
+        ans = check(A, B)
+    else:
+        ans = check(B, A)
+
+    print("#{} {}".format(tc, ans))

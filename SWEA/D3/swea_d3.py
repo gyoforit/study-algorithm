@@ -309,3 +309,29 @@ for t in range(1, T+1):
         box[i] = str(box[i])
     result = ' '.join(box)
     print('#%d %s' % (t, result))
+
+# 210210
+# 6485. 삼성시의 버스 노선
+T = int(input())
+for t in range(1, T+1):
+    busstop = [0] * 5001 # 인덱스가 곧 정류장 번호이므로 편의상 5001로! (0~5000)
+    result = []
+    N = int(input())
+    for n in range(1, N+1):
+        A, B = map(int, input().split())
+        for i in range(A, B+1):
+            busstop[i] += 1
+    P = int(input())
+    for p in range(1, P+1):
+        C = int(input())
+        result += [busstop[C]]
+
+    # 원래 했던거.. 일일이 str로 바꾸기 ㅠ
+    # for i in range(len(result)):
+    #     result[i] = str(result[i])
+    # result = ' '.join(result)
+    
+    # 새로 배운거!! 정수 리스트를 [] 떼고 문자열로 출력하는 법
+    result = ' '.join([str(x) for x in result])
+    # result = ' '.join(map(str, result))
+    print('#%d %s' % (t, result))
