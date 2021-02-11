@@ -335,3 +335,107 @@ for t in range(1, T+1):
     result = ' '.join([str(x) for x in result])
     # result = ' '.join(map(str, result))
     print('#%d %s' % (t, result))
+
+# 210211
+# 1289. 원재의 메모리 복구하기
+'''
+처음부터 하나씩 돌면서 0으로 초기화한 now와 다른 숫자면 count +1 해주고 now를 해당 숫자로 바꿈
+숫자가 달라질때마다 count가 올라가게!
+'''
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+    cnt = 0
+    now = 0
+    for n in N: # 한글자씩 확인하면서
+        if int(n) != now:
+            cnt += 1
+            now = int(n)
+    print("#%d %d" % (t, cnt))
+
+# 5601. [Professional] 쥬스 나누기
+'''
+이건...뭐지 독해 문제인가
+'''
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+
+    print("#%d" % t, end=' ')
+    for n in range(int(N)):
+        print("1/%s" % N, end= ' ')
+    print()
+
+# 10570. 제곱 팰린드롬 수
+'''
+오래 걸렸던 문제... 알고리즘 노트 참고!
+'''
+import math
+def ispalindrome(n):
+    if len(str(n)) == 0:
+        return True
+    if type(n) == float:
+        if n.is_integer() == False:
+            return False
+        else:
+            return ispalindrome(int(n))
+    else:
+        N = str(int(n))
+        cnt = 0
+        for _ in N:
+            cnt += 1
+
+        if cnt <= 1:
+            return True
+        if N[0] == N[-1]:
+            return ispalindrome(N[1:-1])
+        else:
+            return False
+
+T = int(input())
+for t in range(1, T + 1):
+    A, B = map(int, input().split())
+    cnt = 0
+    for a in range(A, B + 1):
+        if ispalindrome(a) == True and ispalindrome(a ** 0.5) == True:
+            cnt += 1
+    print(cnt)
+
+# 다른 풀이
+def check(num):
+    num = str(num)
+    for i in range(len(num) // 2):
+        if num[i] != num[-1 - i]:
+            return False
+    else:
+        return True
+
+for T in range(1, int(input()) + 1):
+    A, B = map(int, input().split())
+    cnt = 0
+    for i in range(A, B + 1):
+        if i ** 0.5 == int(i ** 0.5) and check(i) and check(int(i ** 0.5)):
+            cnt += 1
+    print('#{} {}'.format(T, cnt))
+
+# 활용해서 다시 제출
+def ispalindrome(n):
+    N = str(n)
+    cnt = 0
+    for _ in N:
+        cnt += 1
+    if cnt <= 1:
+        return True
+    if N[0] == N[-1]:
+        return ispalindrome(N[1:-1])
+    else:
+        return False
+
+T = int(input())
+for t in range(1, T + 1):
+    A, B = map(int, input().split())
+    cnt = 0
+    for a in range(A, B + 1):
+        if a ** 0.5 == int(a ** 0.5) and ispalindrome(a) == True and ispalindrome(int(a ** 0.5)) == True:
+            cnt += 1
+    print("#%d %d" % (t, cnt))
