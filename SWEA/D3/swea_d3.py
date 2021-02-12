@@ -439,3 +439,36 @@ for t in range(1, T + 1):
         if a ** 0.5 == int(a ** 0.5) and ispalindrome(a) == True and ispalindrome(int(a ** 0.5)) == True:
             cnt += 1
     print("#%d %d" % (t, cnt))
+
+# 210212
+# 3456. 직사각형 길이 찾기
+# 왜 테케 절반정도만 맞지...?
+T = int(input())
+for t in range(1, T+1):
+    nums = list(map(int, input().split()))
+    half_sum = nums[0]
+    total = 0
+    for n in range(3):
+        if nums[n] != nums[0]:
+            half_sum += nums[n]
+        total += nums[n]
+
+    if half_sum == nums[0]:
+        print("#%d %d" % (t, nums[0]))
+    else:
+        print("#%d %d" % (t, (half_sum*2-total)))
+        
+# pass한 답
+T = int(input())
+for t in range(1, T+1):
+    nums = list(map(int, input().split()))
+    cnt = [0] * 101
+    for i in nums:
+        cnt[i] += 1
+
+    if 3 in cnt:
+        print("#%d %d" % (t, nums[0]))
+    else:
+        for i in range(101):
+            if cnt[i] == 1:
+                print("#%d %d" % (t, i))
