@@ -138,3 +138,39 @@ if zero > one:
 else:
     result = zero
 print(result)
+
+# 210214
+# 4. 만들 수 없는 금액
+'''
+그리디 문제 중 가장 풀이법 생각하기 어려웠음! 나중에 꼭 다시 풀어보기
+'''
+N = int(input())
+num = list(map(int, input().split()))
+num.sort()
+target = 1
+for n in num:
+    if n > target:
+        break
+    target += n
+print(target)
+
+# 5. 볼링공 고르기
+N, M = map(int, input().split())
+ball = list(map(int, input().split()))
+cnt = 0
+for i in range(0, len(ball)-1):
+    for j in range(i+1, len(ball)):
+        if ball[i] != ball[j]:
+            cnt += 1
+print(cnt)
+# 다른 풀이: 무게별로 count하기
+N, M = map(int, input().split())
+ball = list(map(int, input().split()))
+array = [0] * 11
+for b in ball:
+    array[b] += 1
+result= 0
+for i in range(1, M+1):
+    N -= array[i]
+    result += array[i]*N
+print(result)
