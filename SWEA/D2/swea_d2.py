@@ -270,3 +270,90 @@ for tc in range(1, T+1):
         ans = check(B, A)
 
     print("#{} {}".format(tc, ans))
+
+# 210215
+# 1943. 달팽이 숫자
+# 델타 사용한 풀이
+T = int(input())
+for t in range(1, T + 1):
+    N = int(input())
+    result = []
+    for a in range(N):
+        result.append([0] * N)
+    # 현위치
+    r = 0
+    c = -1
+    # 배열에 넣을 숫자
+    n = 0
+    # 반복 횟수
+    k = N
+    # 델타(방향키)
+    drc = [[0, 1, 0, -1], [1, 0, -1, 0]]
+    # 델타의 인덱스
+    a = 0
+    # k를 -1 할지 말지 결정하는 cnt
+    cnt = 0
+    # 종료조건 만족할 때까지 무한 반복
+    while True:
+        # 행 고정, 열 이동
+        for i in range(1, k + 1):
+            n += 1
+            r += drc[0][a]
+            c += drc[1][a]
+            result[r][c] = n
+        # cnt +1 한 다음 cnt가 홀수면 k를 -1 감소
+        cnt += 1
+        if cnt % 2:
+            k -= 1
+        # 반복문 종료 조건
+        if k <= 0:
+            break
+        # 방향키 변경(델타 인덱스 +1)
+        a += 1
+        # 델타 인덱스가 범위 밖을 벗어나는 오류 방지(끝까지 가면 다시 0으로 초기화)
+        if a > 3:
+            a = 0
+    print("#%d" % t)
+    for i in range(N):
+        print(' '.join(map(str, result[i])))
+
+# 델타 사용하지 않은 풀이
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    result = []
+    for a in range(N):
+        result.append([0]*N)
+    # 현 위치
+    r = 0
+    c = -1
+    # 배열에 들어갈 숫자
+    n = 0
+    # r, c의 방향키 역할(순방향/역방향)
+    d = 1
+    # 반복횟수
+    k = N
+    # 반복문 종료조건 만족할 때까지 무한 반복
+    while True:
+        # 행 고정, 열 이동
+        for i in range(1, k+1):
+            n += 1
+            c += d
+            result[r][c] = n
+        # 반복횟수 -1
+        k -= 1
+        # 종료 조건
+        if k <= 0:
+            break
+        # 열 고정, 행 이동
+        for i in range(1, k+1):
+            n += 1
+            r += d
+            result[r][c] = n
+        # 방향 바꿈
+        d *= -1
+
+    # print(result)
+    print("#%d" % t)
+    for i in range(N):
+        print(' '.join(map(str, result[i])))

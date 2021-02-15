@@ -472,3 +472,38 @@ for t in range(1, T+1):
         for i in range(101):
             if cnt[i] == 1:
                 print("#%d %d" % (t, i))
+
+# 210215
+# 1209. [S/W 문제해결 기본] 2일차 - Sum
+for t in range (1, 11):
+    T = int(input())
+    arr = []
+    for i in range(100):
+        arr.append(list(map(int, input().split())))
+    mx = 0
+    a = len(arr)
+    # 각 행의 합
+    for i in range(a):
+        total_1 = 0
+        for j in range(a):
+            total_1 += arr[i][j]
+        if total_1 > mx:
+            mx = total_1
+    # 각 열의 합
+    for j in range(a):
+        total_2 = 0
+        for i in range(a):
+            total_2 += arr[i][j]
+        if total_2 > mx:
+            mx = total_2
+    for i in range(a):
+        total_3 = 0
+        total_3 += arr[i][i]
+    if total_3 > mx:
+        mx = total_3
+    for i in range(a):
+        total_4 = 0
+        total_4 += arr[a-1-i][i]
+    if total_4 > mx:
+        mx = total_4
+    print("#%d %d" % (T, mx))
