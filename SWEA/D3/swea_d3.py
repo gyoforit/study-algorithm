@@ -442,14 +442,14 @@ for t in range(1, T + 1):
 
 # 210212
 # 3456. 직사각형 길이 찾기
-# 왜 테케 절반정도만 맞지...?
+# 왜 테케 절반정도만 맞지...? 오류 찾음!
 T = int(input())
 for t in range(1, T+1):
     nums = list(map(int, input().split()))
     half_sum = nums[0]
     total = 0
     for n in range(3):
-        if nums[n] != nums[0]:
+        if nums[n] != nums[0]: # 이부분이 오류다. 다른 값을 한번 찾고 바로 종료해야 됨!
             half_sum += nums[n]
         total += nums[n]
 

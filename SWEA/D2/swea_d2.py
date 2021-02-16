@@ -357,3 +357,77 @@ for t in range(1, T+1):
     print("#%d" % t)
     for i in range(N):
         print(' '.join(map(str, result[i])))
+
+# 210216
+# 1979. 어디에 단어가 들어갈 수 있을까
+T = int(input())
+for t in range(1, T+1):
+    N, K = map(int, input().split())
+    # 가로세로판 만들기
+    grid = []
+    for g in range(N):
+        grid.append(list(map(int, input().split())))
+    # 단어가 들어갈 수 있는 경우의 수 세는 용
+    cnt = 0
+    # 행 고정, 열 탐색
+    for r in range(N):
+        # 해당 열에서의 1이 있는 길이 측정하기 위한 l 초기화
+        l = 0
+        for c in range(N):
+            # 1이면 l에 +1
+            if grid[r][c] == 1:
+                l += 1
+            # 0이면 앞에까지 더해놨던 l 파악 -> 만약 K라면 cnt +1 한 후에 l을 다시 0으로 초기화
+            else:
+                if l == K:
+                    cnt += 1
+                l = 0
+        # 마지막 열이 l인 경우를 위해 다시 한번 K랑 같은지 파악
+        if l == K:
+            cnt += 1
+    # 열 고정, 행 탐색 (똑같음)
+    for c in range(N):
+        l = 0
+        for r in range(N):
+            if grid[r][c] == 1:
+                l += 1
+            else:
+                if l == K:
+                    cnt += 1
+                l = 0
+        if l == K:
+            cnt += 1
+    print("#%d %d" % (t, cnt))
+
+# 2001. 파리퇴치
+T = int(input())
+for t in range(1, T + 1):
+    N, M = map(int, input().split())
+    # 이중 배열 만들기
+    grid = []
+    for n in range(N):
+        grid.append(list(map(int, input().split())))
+    # 최댓값 저장할 mx
+    mx = 0
+    # 기준 위치 r, c
+    r = 0
+    c = 0
+    while True:
+        # 해당 구간에서의 요소 합 구할 tmp
+        tmp = 0
+        # 좌상단 모서리를 r, c라고 했을 때 M*M 파리채 만들어서 해당하는 요소들 모두 tmp에 더함
+        for i in range(r, r + M):
+            for j in range(c, c + M):
+                tmp += grid[i][j]
+        # tmp가 mx보다 크면 mx에 tmp 할당 후 열을 한칸 이동( c +1 )
+        if tmp > mx:
+            mx = tmp
+        c += 1
+        # 열을 계속 더하다가 N-M 보다 커지면 0열로 돌아가고 r을 한칸 +1
+        if c == N - M + 1:
+            r += 1
+            c = 0
+        # 좌상단 모서리의 r이 제일 마지막 위치(N-M)의 좌표보다 커지면 반복 종료
+        if r > N - M:
+            break
+    print("#%d %d" % (t, mx))

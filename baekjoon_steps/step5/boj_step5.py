@@ -59,3 +59,17 @@ total = 0
 for j in score:
     total += (j/max_s)*100
 print(total/N)
+
+# 8958. OX퀴즈
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+    score = 0
+    cnt = 1
+    for i in N:
+        if i == 'O':
+            score += cnt
+            cnt += 1
+        else:
+            cnt = 1
+    print(score)
