@@ -431,3 +431,44 @@ for t in range(1, T + 1):
         if r > N - M:
             break
     print("#%d %d" % (t, mx))
+
+# 1940. 가랏! RC카!
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    now = 0
+    vc = 0
+    for n in range(N):
+        try:
+            a, b = map(int, input().split())
+            if a == 1:
+                vc += b
+                now += vc
+            elif a == 2:
+                if b > vc:
+                    vc = 0
+                else:
+                    vc -= b
+                now += vc
+        except:
+            now += vc
+    print("#%d %d" % (t, now))
+
+# 1976. 시각 덧셈
+T = int(input())
+for t in range(1, T+1):
+    h1, m1, h2, m2 = map(int, input().split())
+    h, m = 0, 0
+    if m1 + m2 >= 60:
+        m = m1+m2-60
+        if h1+h2 > 12:
+            h = h1+h2-11
+        else:
+            h = h1+h2+1
+    else:
+        m = m1+m2
+        if h1+h2 > 12:
+            h = h1+h2-12
+        else:
+            h = h1+h2
+    print("#%d %d %d" % (t, h, m))
