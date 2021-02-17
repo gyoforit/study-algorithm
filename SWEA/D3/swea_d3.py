@@ -507,3 +507,35 @@ for t in range (1, 11):
     if total_4 > mx:
         mx = total_4
     print("#%d %d" % (T, mx))
+
+# 210217
+# 1221. GNS
+GNS = ['ZRO', 'ONE', 'TWO', 'THR', 'FOR', 'FIV', 'SIX', 'SVN', 'EGT', 'NIN']
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+    # 긴 문자열을 공백 단위로 끊어서 리스트에 담기
+    num = list(map(str, input().split()))
+    # 각 문자당 등장 횟수를 세기 위한 cnt 리스트 준비
+    # GNS와 cnt의 인덱스를 똑같게 매칭할 것임 0 = ZRO, 1 = ONE ...
+    cnt = [0]*10
+    # 문자열 리스트의 요소를 하나씩 꺼내서
+    for n in num:
+        # GNS 리스트의 순서대로 비교하며 그 값이 같으면 GNS의 인덱스와 같은 cnt 인덱스에 +1
+        # GNS와 cnt의 인덱스는 의미가 같기 때문에!
+        # ex. GNS[0] = 'ZRO', cnt[0] = 'ZRO'가 나온 개수
+        for g in range(len(GNS)):
+            if n == GNS[g]:
+                cnt[g] += 1
+                # 시간 아끼기 위해 값 찾으면 break로 빠져나감
+                break
+    result = ''
+    # cnt 리스트 돌면서 값이 있으면(=0이 아니면)
+    # GNS에서 같은 인덱스의 값을 cnt[i]번 만큼 곱해서 result에 차곡차곡 더하기
+    for i in range(len(cnt)):
+        if cnt[i] != 0:
+            result += (GNS[i] + ' ')*cnt[i]
+    # 맨 끝에 있는 공백 없애기 위해 rstrip()
+    result = result.rstrip()
+    print("#%d" % t)
+    print(result)

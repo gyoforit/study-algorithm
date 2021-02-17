@@ -472,3 +472,58 @@ for t in range(1, T+1):
         else:
             h = h1+h2
     print("#%d %d %d" % (t, h, m))
+
+# 210217
+#1974. 스도쿠검증
+# 겹치는게 하나라도 있으면 무조건 0이므로 return False가 더 먼저 나와야 함
+# 행 검사하는 함수
+def test_row(arr):
+    N = len(arr)
+    for r in range(N):
+        test = []
+        for c in range(N):
+            test.append(arr[r][c])
+        if len(set(test)) != 9:
+            return False
+    else:
+        return True
+# 열 검사하는 함수
+def test_col(arr):
+    N = len(arr)
+    for c in range(N):
+        test = []
+        for r in range(N):
+            test.append(arr[r][c])
+        if len(set(test)) != 9:
+            return False
+    return True
+# 3*3 네모 검사하는 함수
+def test_sqr(arr):
+    r = 0
+    c = 0
+    while True:
+        test = []
+        for i in range(r, r+3):
+            for j in range(c, c+3):
+                test.append(arr[i][j])
+        if len(set(test)) != 9:
+            return False
+        else:
+            c += 3
+        if c == 9:
+            c = 0
+            r += 3
+        if r == 9:
+            break
+    return True
+
+T = int(input())
+for t in range(1, T+1):
+    puzzle = []
+    L = 9
+    for i in range(9):
+        puzzle.append(list(map(int, input().split())))
+    if test_row(puzzle) and test_col(puzzle) and test_sqr(puzzle):
+        print("#%d 1" % t)
+    else:
+        print("#%d 0" % t)
