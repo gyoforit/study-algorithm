@@ -73,3 +73,20 @@ for t in range(1, T+1):
         else:
             cnt = 1
     print(score)
+
+# 210218
+# 4344. 평균은 넘겠지
+C = int(input())
+for c in range(1, C+1):
+    num = list(map(int, input().split()))
+    l = len(num)
+    total = 0
+    for i in range(1, l):
+        total += num[i]
+    avg = total/(l-1)
+    cnt = 0
+    for p in range(1, l):
+        if num[p] > avg:
+            cnt += 1
+    result = (cnt/(l-1))*100
+    print(f'{result:.3f}%')

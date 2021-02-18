@@ -539,3 +539,46 @@ for t in range(1, T+1):
     result = result.rstrip()
     print("#%d" % t)
     print(result)
+
+# 210218
+# 1216. 회문2
+# 회문 판별 함수
+def ispalin(arr):
+    for i in range(len(arr)//2):
+        if arr[i] != arr[-i-1]:
+            return False
+    return True
+
+T = 10
+for t in range(1, T+1):
+    N = int(input())
+    grid1 = []
+    # grid1의 전치행렬(열 검사하기 까다로우니까..)
+    grid2 = []
+    for i in range(100):
+        grid1.append(list(input()))
+    grid2 = list(zip(*grid1))
+
+    # grid1 검사
+    mx = 1
+    # 최대길이 구하는거니까 100부터 내려가기
+    for l in range(100, 1, -1):
+        # 기존 최대길이가 검사할 길이 이상이면 더이상 비교할 필요 x
+        if l <= mx:
+            break
+        for i in range(100-l+1): # 비교할 인덱스 처음 부분
+            for g in grid1:
+                if ispalin(g[i:i+l]):
+                    if l > mx:
+                        mx = l
+    # grid2 검사
+    for l in range(100, 1, -1):
+        if l <= mx:
+            break
+        for i in range(100-l+1):
+            for g in grid2:
+                if ispalin(g[i:i+l]):
+                    if l > mx:
+                        mx = l
+
+    print("#%d %d" % (t, mx))

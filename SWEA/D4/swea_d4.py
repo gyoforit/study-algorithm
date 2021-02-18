@@ -27,3 +27,37 @@ for t in range(1, T+1):
             r -= 1
             dir = 0
     print("#%d %d" % (t, c))
+
+# 210218
+# 3143. 가장 빠른 문자열 타이핑
+T = int(input())
+for t in range(1, T+1):
+    A, B = input().split()
+    result = len(A) - ((len(B)-1)*A.count(B))
+    print(result+A.count(B))
+
+# 5432. 쇠막대기 자르기
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+    n = len(N)
+    i = 0
+    # pipe = 쇠막대기 / cut = 잘린 조각
+    pipe = 0
+    cut = 0
+    while i < n:
+        if N[i] == '(':
+            # ( 다음 바로 )가 오면 레이저 -> 기존의 pipe 개수만큼 cut 증가
+            if N[i+1] == ')':
+                cut += pipe
+                i += 2
+            # )가 오지 않은 (는 pipe -> pipe 개수 +1
+            else:
+                pipe += 1
+                i += 1
+        # 둘다 아닌 )는 pipe의 끝 -> 레이저를 지나왔으므로 cut +1, pipe -1
+        else:
+            pipe -= 1
+            cut += 1
+            i += 1
+    print("#%d %d" % (t, cut))

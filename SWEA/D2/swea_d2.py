@@ -527,3 +527,192 @@ for t in range(1, T+1):
         print("#%d 1" % t)
     else:
         print("#%d 0" % t)
+
+# 210218
+# 4861. 회문
+# 회문인지 판단하는 함수 정의
+def ispalin(x):
+    if len(x) <= 1:
+        return True
+    while len(x) > 1:
+        if x[0] == x[-1]:
+            return ispalin(x[1:-1])
+        else:
+            return False
+
+T = int(input())
+for t in range(1, T + 1):
+    N, M = map(int, input().split())
+    # 그리드 만들기
+    grid = []
+    for n in range(N):
+        tmp = []
+        tmp.extend(input())
+        grid.append(tmp)
+    # 찾자마자 반복 끝내기 위해 while 문 안에 flag 장치를 둠
+    while True:
+        flag = 0
+        # 행 고정
+        for r in range(N):
+            for c in range(N-M+1):
+                tmp = ''
+                for i in range(M):
+                    tmp += grid[r][c+i]
+                if ispalin(tmp):
+                    flag = 1
+                    print("#%d %s" % (t, tmp))
+                    break
+        if flag == 1:
+            break
+        # 열 고정
+        for c in range(N):
+            for r in range(N-M+1):
+                tmp = ''
+                for i in range(M):
+                    tmp += grid[r+i][c]
+                if ispalin(tmp):
+                    print("#%d %s" % (t, tmp))
+                    break
+        break
+
+# 4864. 문자열 비교
+def compare(A, B):
+    a = len(A)
+    b = len(B)
+    for i in range(b-a+1):
+        if B[i] == A[0]:
+            if B[i:i+a] == A:
+                return 1
+    else:
+        return 0
+
+T = int(input())
+for t in range(1, T+1):
+    N = input()
+    M = input()
+    result = compare(N, M)
+
+    print("#%d %d" % (t, result))
+
+# 4865. 글자수
+T = int(input())
+for t in range(1, T+1):
+    str1 = []
+    str1.extend(input())
+    str2 = input()
+    str_dict = dict.fromkeys(str1, 0)
+
+    for s in str2:
+        if s in str_dict.keys():
+            str_dict[s] += 1
+    result = max(str_dict.values())
+    print("#%d %d" % (t, result))
+
+# 1926. 간단한 369 게임
+# 3, 6, 9 개수 세는 함수
+def cnt(n):
+    result = n.count('3') + n.count('6') + n.count('9')
+    return result
+
+N = int(input())
+for i in range(1, N+1):
+    tmp = []
+    # 숫자 하나씩 확인하기 위해 string 으로 받아서 extend
+    tmp.extend(str(i))
+    if cnt(tmp) == 0:
+        print(i, end =' ')
+    else:
+        print('-'*cnt(tmp), end = ' ')
+
+# 1983. 조교의 성적 매기기
+scr = ['A+', 'A0', 'A-', 'B+', 'B0', 'B-', 'C+', 'C0', 'C-', 'D0']
+# 총점 세는 함수 정의
+def score(m, f, h):
+    total = m*0.35 + f*0.45 + h*0.2
+    return total
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    score_list = []
+    student = 0
+    for n in range(N):
+        m, f, h = map(int, input().split())
+        s = score(m, f, h)
+        score_list.append(s)
+    # 등수 확인하고 싶은 번호의 점수를 student에 저장
+    student = score_list[M-1]
+    rank = 0
+    sorted_list = sorted(score_list) # 오름차순
+    for a in range(N):
+        # 해당 점수의 등수를 뽑음
+        if sorted_list[a] == student:
+            rank = N-a # 오름차순에서 8등은 상위 2등이기 때문
+            break
+
+    if rank % (N//10) != 0:
+        rank = rank//(N//10) + 1
+    else:
+        rank = rank//(N//10)
+    print("#%d %s" % (t, scr[int(rank-1)]))
+
+# 1946. 압축풀기
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    text = ''
+    for n in range(N):
+        c, k = input().split()
+        text += c*int(k)
+    # 한번에 쭉 길게 늘어뜨린다음
+    txt = len(text)
+    i = 0
+    print("#%d" % t)
+    # 10개 단위로 잘라서 print (slicing 에서는 index 벗어나도 되는 점을 이용)
+    while True:
+        print(text[i:i+10])
+        i += 10
+        if i > txt:
+            break
+
+# 1984. 중간 평균값 구하기
+def get_max(arr):
+    mx = arr[0]
+    for i in arr:
+        if i > mx:
+            mx = i
+    return mx
+
+def get_min(arr):
+    mn = arr[0]
+    for i in arr:
+        if i < mn:
+            mn = i
+    return mn
+
+T = int(input())
+for t in range(1, T+1):
+    num = list(map(int, input().split()))
+    num.remove(get_max(num))
+    num.remove(get_min(num))
+    total = 0
+    n = len(num)
+    for i in num:
+        total += i
+    result = total/n
+    print("#%d %d" % (t, int(round(result, 0))))
+
+# 1204. 최빈수 구하기
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    num = list(map(int, input().split()))
+    cnt = [0] * 101
+    for n in num:
+        cnt[n] += 1
+    mx_idx = 0
+
+    for i in range(101):
+        if cnt[i] >= cnt[mx_idx]:
+            mx_idx = i
+    print("#%d %d" % (t, mx_idx))
