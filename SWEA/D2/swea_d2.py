@@ -716,3 +716,25 @@ for t in range(1, T+1):
         if cnt[i] >= cnt[mx_idx]:
             mx_idx = i
     print("#%d %d" % (t, mx_idx))
+
+# 210219
+# 1961. 숫자 배열 회전
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    arr = []
+    for a in range(N):
+        arr.append(list(input().split()))
+    print("#%d" % t)
+    # i, j는 고정해놓고 각 회전에 따라 i, j를 사용하여 다르게 표현하기
+    for i in range(N):
+        tmp = ''
+        for j in range(N):
+            tmp += arr[N-1-j][i]
+        tmp += ' '
+        for j in range(N):
+            tmp += arr[N-1-i][N-1-j]
+        tmp += ' '
+        for j in range(N):
+            tmp += arr[j][N-1-i]
+        print(tmp)

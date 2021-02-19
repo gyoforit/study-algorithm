@@ -582,3 +582,128 @@ for t in range(1, T+1):
                         mx = l
 
     print("#%d %d" % (t, mx))
+
+# 210219
+# 5356. 의석이의 세로로 말해요
+T = int(input())
+for t in range(1, T+1):
+    l = 0
+    str = []
+    for i in range(5):
+        str.append(input())
+        # 리스트 받으면서 최대 길이 측정까지 같이 함
+        if len(str[i]) > l:
+            l = len(str[i])
+    result = ''
+    for c in range(l):
+        for r in range(5):
+            try:
+                result += str[r][c]
+            # 인덱스 오류 나면 (= 해당 자리에 문자 없으면) 아무것도 x
+            except:
+                pass
+
+    print("#%d %s" % (t, result))
+
+# 4047. 영준이의 카드 카운팅
+T = int(input())
+for t in range(1, T+1):
+    S = input()
+    s = len(S)
+    card = []
+    i = 0
+    # 크기 3씩 슬라이싱해서 card 리스트 만들기
+    while i < s:
+        card += [S[i:i+3]]
+        i += 3
+    # 중복 여부 확인
+    if len(card) != len(set(card)):
+        print("#%d ERROR" % (t))
+    else:
+        # 모양 별 개수 세기
+        cnt = [0]*4
+        for c in card:
+            if c[0] == 'S':
+                cnt[0] += 1
+            elif c[0] == 'D':
+                cnt[1] += 1
+            elif c[0] == 'H':
+                cnt[2] += 1
+            else:
+                cnt[3] += 1
+        # 모자란 카드 수 구하기
+        result = [0]*4
+        for j in range(4):
+            result[j] += 13-cnt[j]
+
+        print("#%d %s" % (t, ' '.join(map(str, result))))
+
+# 11315. 오목 판정
+# 대각선 체크하는게 대박 힘들었다... 다섯개 셀 수 있는 출발 인덱스 구하기가 핵심
+# 큰 for 의 작은 for - break - else 구문에서 else 빼버리면 안됨! break 걸려도 실행되기 때문..
+def check_omok(arr):
+    # 행 검사
+    N = len(arr)
+    for r in range(N):
+        for c in range(N-4): # 비교 시작점
+            for i in range(5):
+                if arr[r][c+i] != 'o':
+                    break
+            else:
+                return 'YES'
+    # 열 검사
+    for c in range(N): # N = 6 일 때를 상상
+        for r in range(N-4):
+            for i in range(5):
+                if arr[r+i][c] != 'o':
+                    break
+            else:
+                return 'YES'
+
+    # 좌상향 대각선
+    drc = [[1, 1], [1, -1]]
+    for c in range(N-4): # 0, 1
+        for r in range(N-4): # 0, 1
+            for i in range(5):
+                if arr[r+(drc[0][0]*i)][c+(drc[0][1]*i)] != 'o':
+                    break
+            else:
+                return 'YES'
+
+    # 우상향 대각선
+    for c in range(N-1, 3, -1): # 5, 4
+        for r in range(N-4): # 0, 1
+            for i in range(5):
+                if arr[r+(drc[1][0]*i)][c+(drc[1][1]*i)] != 'o':
+                    break
+            else:
+                return 'YES'
+    return 'NO'
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    board = []
+    for n in range(N):
+        tmp = []
+        tmp.extend(input())
+        board += [tmp]
+    result = check_omok(board)
+    print("#%d %s" % (t, result))
+
+# 3499. 퍼펙트 셔플
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    card = list(input().split())
+    result = []
+    # 홀수일 땐 짝이 안 맞으니까 맨 뒤에 공백 추가한 후 N + 1
+    if N % 2:
+        card += [' ']
+        N += 1
+    for i in range((N//2)):
+        result += [card[i]]
+        result += [card[(N//2)+i]]
+    # 홀수인 경우 위해 오른쪽 공백 제거
+    result = ' '.join(result).rstrip()
+    print("#%d %s" % (t, result))
