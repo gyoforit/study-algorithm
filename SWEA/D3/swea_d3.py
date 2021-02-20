@@ -707,3 +707,29 @@ for t in range(1, T+1):
     # 홀수인 경우 위해 오른쪽 공백 제거
     result = ' '.join(result).rstrip()
     print("#%d %s" % (t, result))
+
+# 210220
+# 2805. 농작물 수확하기
+# 예외 케이스에 항상 주의하자!!!
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    farm = []
+    for _ in range(N):
+        tmp = []
+        tmp.extend(input())
+        farm.append(list(map(int, tmp)))
+    if N == 1:
+        print("#%d %d" % (t, farm[0][0]))
+    else:
+        c = N//2  # 중심열
+        harv = farm[0][c] + farm[N-1][c] # 맨 위, 아래 더하고 시작
+        for r in range(1, N-1):
+            harv += farm[r][c] # 중심점 더함
+            if r <= N//2:
+                for i in range(1, r+1):
+                    harv += farm[r][c-i] + farm[r][c+i]
+            else:
+                for i in range(1, N-r):
+                    harv += farm[r][c-i] + farm[r][c+i]
+        print("#%d %d" % (t, harv))
