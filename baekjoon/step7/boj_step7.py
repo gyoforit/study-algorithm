@@ -54,3 +54,54 @@ else:
         if cnt[i] == mx:
             mx_idx = i
     print(chr(mx_idx+65))
+
+# 210221
+# 1152. 단어의 개수
+S = ' ' + input() + ' '
+cnt = 0
+for i in range(len(S)-1):
+    if S[i] == ' ' and S[i+1] != ' ':
+        cnt += 1
+print(cnt)
+
+# 2908. 상수
+A, B = input().split()
+A = int(A[::-1])
+B = int(B[::-1])
+print(max(A, B))
+
+# 5622. 다이얼
+dial = [['A', 'B', 'C'], ['D', 'E', 'F'], ['G', 'H', 'I'], ['J', 'K', 'L'], ['M', 'N', 'O'],
+        ['P', 'Q', 'R', 'S'], ['T', 'U', 'V'], ['W', 'X', 'Y', 'Z']]
+
+S = input()
+result = 0
+for s in S:
+    for i in range(len(dial)):
+        if s in dial[i]:
+            result += i+3
+            break
+print(result)
+
+# 2941. 크로아티아 알파벳
+abc = ['c=', 'c-', 'dz=', 'd-', 'lj', 'nj', 's=', 'z=']
+S = input()
+cnt = 0
+for i in abc:
+    S = S.replace(i, '*')
+print(len(S))
+
+# 1316. 그룹 단어 체커
+N = int(input())
+cnt = 0
+for _ in range(N):
+    tmp = []
+    S = input()
+    for i in range(len(S)):
+        if S[i] not in tmp:
+            tmp.append(S[i])
+        else:
+            if i > 0 and S[i-1] != S[i]:
+                cnt += 1 # 그룹단어 아니면 체크
+                break
+print(N-cnt)
