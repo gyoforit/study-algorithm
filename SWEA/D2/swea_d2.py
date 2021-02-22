@@ -738,3 +738,65 @@ for t in range(1, T+1):
         for j in range(N):
             tmp += arr[j][N-1-i]
         print(tmp)
+
+# 210222
+# 2005. 파스칼의 삼각형
+T = int(input())
+for t in range(1, T+1):
+    pascal = []
+    N = int(input())
+    for n in range(1, N+1):
+        if n == 1:
+            pascal.append([1])
+        elif n == 2:
+            pascal.append([1, 1])
+        elif n >= 3:
+            tmp = []
+            # 바로 이전 리스트의 요소들을 둘씩 더한 값을 tmp에 저장
+            for i in range(n-2):
+                tmp += [pascal[n-2][i]+pascal[n-2][i+1]]
+            # tmp의 양 옆을 1로 감싸서 append
+            tmp = [1] + tmp + [1]
+            pascal.append(tmp)
+    print("#%d" % t)
+    for a in range(N):
+        print(' '.join(map(str, pascal[a])))
+
+# 11572. 괄호검사
+# 열린 괄호와 닫힌 괄호를 인덱스로 구별하기 위한 리스트 생성
+opn = ['(', '{', '[']
+cls = [')', '}', ']']
+T = int(input())
+for t in range(1, T + 1):
+    bracket = []
+    # 규칙에 어긋나면 0으로 바뀜
+    result = 1
+    S = input()
+    for s in S:
+        # 열린 괄호일 때: 소/중/대 종류에 맞는 인덱스를 append
+        if s in opn:
+            for i in range(len(opn)):
+                if opn[i] == s:
+                    bracket.append(i)
+                    break
+        # 닫힌 괄호일 때: 가장 최근에 append 된 요소를 비교하여 같으면 pop
+        elif s in cls:
+            # bracket이 비어있다 = 짝이 안 맞는다 = 규칙에 어긋남
+            if len(bracket) == 0:
+                result = 0
+                break
+            else:
+                tmp = 0
+                poped = bracket.pop(-1)
+                for j in range(len(cls)):
+                    if cls[j] == s:
+                        tmp = j
+                # 가장 최근에 append 된 요소와 닫힌 괄호의 종류가 다르면 규칙에 어긋남
+                if tmp != poped:
+                    result = 0
+                    break
+    # 문자열을 다 돌았는데 bracket에 요소가 있음 = 짝이 안 맞는다 = 규칙에 어긋남
+    if len(bracket) > 0:
+        result = 0
+
+    print("#%d %d" % (t, result))
