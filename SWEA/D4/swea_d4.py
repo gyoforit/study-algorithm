@@ -61,3 +61,33 @@ for t in range(1, T+1):
             cut += 1
             i += 1
     print("#%d %d" % (t, cut))
+
+# 1219. [S/W 문제해결 기본] 4일차 - 길찾기
+V = 100
+# 경로 탐색하는 함수 정의
+def DFS(V, AL, sv):
+    visited = [0]*V
+    stack = [sv]
+    while stack:
+        now = stack.pop(-1)
+        if visited[now] == 0:
+            visited[now] = 1
+            # 99까지 갈 수 있는지의 여부가 중요하기 때문에 99까지 닿으면 return 1
+            if now == 99:
+                return 1
+            for i in AL[now]:
+                if not visited[i]:
+                    stack.append(i)
+    # 중간에 return 없이 다 돌았으면 경로 없다는 뜻이므로 return 0
+    return 0
+
+for _ in range(10):
+    N, E = map(int, input().split())
+    route = list(map(int, input().split()))
+    edges = [(route[i], route[i+1]) for i in range(0, E*2, 2)]
+    AL =[[] for _ in range(V)]
+    for s, e in edges:
+        AL[s].append(e)
+
+    result = DFS(V, AL, 0)
+    print("#%d %d" % (N, result))

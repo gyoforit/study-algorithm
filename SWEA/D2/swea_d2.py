@@ -800,3 +800,102 @@ for t in range(1, T + 1):
         result = 0
 
     print("#%d %d" % (t, result))
+
+# 210223
+# 4871. [파이썬 S/W 문제해결 기본] 4일차 - 그래프 경로
+# 인접 행렬 이용
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AM = [[0]*(V+1) for _ in range(V+1)]
+    for _ in range(E):
+        s, e = map(int, input().split())
+        AM[s][e] = 1
+    S, G = map(int, input().split())
+    stack = [S]
+    visited = [0]*(V+1)
+    result = 0
+    while stack:
+        now = stack.pop()
+        if not visited[now]:
+            visited[now] = 1
+            if now == G:
+                result = 1
+                break
+            for i in range(1, V+1):
+                if AM[now][i] == 1 and visited[i] == 0:
+                    stack.append(i)
+    print("#%d %d" % (t, result))
+
+# 인접 리스트 이용
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AL = [[] for _ in range(V+1)]
+    for _ in range(E): # E번 반복
+        s, e = map(int, input().split())
+        AL[s].append(e)
+    S, G = map(int, input().split())
+    stack = [S]
+    visited = [0]*(V+1)
+    result = 0
+    while stack:
+        now = stack.pop()
+        if not visited[now]:
+            visited[now] = 1
+            if now == G:
+                result = 1
+                break
+            for i in AL[now]:
+                if not visited[i]:
+                    stack.append(i)
+    print("#%d %d" % (t, result))
+
+# 4873. [파이썬 S/W 문제해결 기본] 4일차 - 반복문자 지우기
+T = int(input())
+for t in range(1, T+1):
+    S = input()
+    stack = []
+    for s in S:
+        if not stack:
+            stack.append(s)
+        else:
+            last = stack[-1]
+            if last != s:
+                stack.append(s)
+            else:
+                stack.pop()
+
+    print("#%d %d" % (t, len(stack)))
+
+# 좀 더 간결하게 수정
+T = int(input())
+for t in range(1, T+1):
+    S = input()
+    stack = []
+    for s in S:
+        if not stack or stack[-1] != s:
+            stack.append(s)
+        else:
+            stack.pop()
+    l = len(stack)
+    print("#%d %d" % (t, l))
+
+# 4869. [파이썬 S/W 문제해결 기본] 4일차 - 종이붙이기
+# DP 활용! 바로 전, 전전 것에서 규칙을 찾는다.
+def paper(n):
+    if n == 1:
+        return 1
+    if n == 2:
+        return 3
+    if n > 2:
+        return paper(n-1)+(paper(n-2)*2)
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    result = paper(N//10)
+    print("#%d %d" % (t, result))
+
+
+
+

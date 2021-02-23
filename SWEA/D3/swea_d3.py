@@ -46,6 +46,19 @@ for i in range(1, T+1):
 6. 그렇지 않다면(자음이라면) 원래 철자를 추가
 7. new_chars에서 join 사용하여 문자열로 반환
 '''
+# 210223 - 4406 수정
+vowel = 'aeiou'
+T = int(input())
+for t in range(1, T+1):
+    chars = []
+    chars.extend(input())
+    new_chars = []
+    for c in chars:
+        # vowel에 없을 때만 새 리스트에 append
+        if c not in vowel:
+            new_chars.append(c)
+    result = ''.join(new_chars)
+    print("#%d %s" % (t, result))
 
 # 10505. 소득 불균형
 T = int(input())
@@ -733,3 +746,85 @@ for t in range(1, T+1):
                 for i in range(1, N-r):
                     harv += farm[r][c-i] + farm[r][c+i]
         print("#%d %d" % (t, harv))
+
+# 210223
+# 1234. [S/W 문제해결 기본] 10일차 - 비밀번호
+# D2 4873이랑 원리 똑같은 문제
+for t in range(1, 11):
+    N, S = input().split()
+    stack = []
+    for s in S:
+        if not stack or stack[-1] != s:
+            stack.append(s)
+        else:
+            stack.pop()
+    print("#%d %s" % (t, ''.join(stack)))
+
+# 1217. [S/W 문제해결 기본] 4일차 - 거듭 제곱
+def power(n, m):
+    if m == 0:
+        return 1
+    elif m == 1:
+        return n
+    else:
+        return n*power(n, m-1)
+
+for _ in range(1, 11):
+    T = int(input())
+    N, M = map(int, input().split())
+    result = power(N, M)
+    print("#%d %d" % (T, result))
+
+# 1215. [S/W 문제해결 기본] 3일차 - 회문1
+def ispalin(n, arr):
+    l = len(arr)
+    cnt = 0
+    for r in range(l):
+        for c in range(l-n+1):
+            tmp = ''
+            for i in range(n):
+                tmp += arr[r][c+i]
+            if tmp == tmp[::-1]:
+                cnt += 1
+    # 급하게 푸느라 중복 신경 못 씀..나중에 윗 for 문이랑 합치기...
+    for c in range(l):
+        for r in range(l-n+1):
+            tmp = ''
+            for i in range(n):
+                tmp += arr[r+i][c]
+            if tmp == tmp[::-1]:
+                cnt += 1
+    return cnt
+
+for t in range(1, 11):
+    N = int(input())
+    grid = []
+    for _ in range(8):
+        tmp = []
+        tmp.extend(input())
+        grid.append(tmp)
+    result = ispalin(N, grid)
+    print("#%d %d" % (t, result))
+
+# 1230. [S/W 문제해결 기본] 8일차 - 암호문3
+for t in range(1, 11):
+    N = int(input())
+    before = list(map(int, input().split()))
+    M = int(input())
+    S = list(input().split())
+    for i in range(len(S)):
+        if S[i] == 'I':
+            # insert 하면 뒤로 계속 밀리니까 맨 끝 수부터 insert
+            for j in range(int(S[i+2]), 0, -1):
+                before.insert(int(S[i+1]), S[i+2+j])
+        elif S[i] == 'D':
+            for _ in range(int(S[i+2])):
+                before.pop(int(S[i+1]))
+        elif S[i] == 'A':
+            # append는 맨 끝에서 차곡 차곡 붙으므로 순서대로 하면 됨
+            for j in range(int(S[i+1])):
+                before.append(int(S[i+2+j]))
+    after = []
+    for a in range(10):
+        after.append(before[a])
+    print("#%d %s" % (t, ' '.join(map(str, after))))
