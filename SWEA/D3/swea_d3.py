@@ -828,3 +828,25 @@ for t in range(1, 11):
     for a in range(10):
         after.append(before[a])
     print("#%d %s" % (t, ' '.join(map(str, after))))
+
+# 210224
+# 1860. 진기의 최고급 붕어빵
+T = int(input())
+for t in range(1, T+1):
+    N, M, K = map(int, input().split())
+    time = list(map(int, input().split()))
+    # 시간 순서대로 판단하기 위해 정렬
+    time.sort()
+    result = 'Possible'
+    # 이제까지 온 손님 수 cnt
+    cnt = 0
+    for i in time:
+        # 해당 시점의 붕어빵 개수는 (i//M)*K 에서 손님 수를 뺀 값
+        boonguh = (i//M)*K - cnt
+        if boonguh == 0:
+            result = 'Impossible'
+            break
+        # 붕어빵이 있으면 손님 수 +1
+        else:
+            cnt += 1
+    print("#%d %s" % (t, result))

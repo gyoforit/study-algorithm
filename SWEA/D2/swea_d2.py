@@ -896,6 +896,48 @@ for t in range(1, T+1):
     result = paper(N//10)
     print("#%d %d" % (t, result))
 
+# 210224
+# 1859. 백만장자 프로젝트
+# 리스트의 max 기준으로 한 번 잘라서 이익 구하고, 그 다음 인덱스부터 max를 또 구하고 ...(반복)
+# 맨 뒤에서부터 접근하면 간단함 - 더 큰 값 나올 때까지 누적해서 이익 더하기
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    price = list(map(int, input().split()))
+    mx_now = price[-1]
+    money = 0
+    for i in range(N-2, -1, -1):
+        if mx_now > price[i]:
+            money += mx_now - price[i]
+        else:
+            mx_now = price[i]
+    print("#%d %d" % (t, money))
+
+# 11556. 부분집합의 합 - 재귀 사용
+A = list(range(1, 13))
+n = 12
+
+def DFS_subset(lv, C, S):
+    # 성능 향상을 위한 가지치기
+    if C > N or S > K: return
+    # 종료조건
+    if lv == n:
+        if C == N and S == K:
+            global cnt
+            cnt += 1
+        return
+
+    DFS_subset(lv+1, C+1, S + A[lv])
+    DFS_subset(lv+1, C, S)
+
+T = int(input())
+for t in range(1, T + 1):
+    N, K = map(int, input().split())
+    cnt = 0
+    DFS_subset(0, 0, 0)
+    print('#%d %d' % (t, cnt))
+
+
 
 
 

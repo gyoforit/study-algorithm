@@ -91,3 +91,97 @@ for _ in range(10):
 
     result = DFS(V, AL, 0)
     print("#%d %d" % (N, result))
+
+# 210224
+# 1223. [S/W 문제해결 기본] 6일차 - 계산기2
+# 연산자의 우선순위를 반환하는 함수
+def priority(x):
+    if x == '+' or x == '-':
+        return 2
+    elif x == '*' or x == '/':
+        return 1
+
+# 후위표기법으로 변환해주는 함수
+def postfix(S):
+    after = ''
+    stack = []
+    for s in S:
+        if s not in '*/+-()':
+            after += s
+        else:
+            # '('는 stack 안에서 우선순위 가장 낮으므로 무시(?)하고 다른거 append 하게 처리
+            if not stack or s == '(' or stack[-1] == '(':
+                stack.append(s)
+            elif s == ')':
+                while True:
+                    if stack[-1] == '(':
+                        stack.pop()
+                        break
+                    after += stack.pop()
+            elif s in '+-*/':
+                if priority(s) < priority(stack[-1]):
+                    stack.append(s)
+                else:
+                    while True:
+                        # 인덱스 에러 방지: stack이 비었을 때도 고려함
+                        if not stack or priority(s) < priority(stack[-1]):
+                            break
+                        after += stack.pop()
+                    stack.append(s)
+    # 수식의 끝까지 도달한 후, stack이 빌 때까지 계속 pop
+    while stack:
+        after += stack.pop()
+    return after
+
+# 후위표기법을 계산하는 함수
+def cal(A):
+    stack = []
+    for a in A:
+        if a not in '+-*/':
+            stack.append(a)
+        else:
+            # 피연산자를 미리 int로 바꿔놓음
+            y = int(stack.pop())
+            x = int(stack.pop())
+            if a == '+':
+                ans = x+y
+            elif a == '-':
+                ans = x-y
+            elif a == '*':
+                ans = x*y
+            else:
+                ans = x/y
+            stack.append(ans)
+    return stack.pop()
+
+for t in range(1, 11):
+    L = int(input())
+    S = input()
+    result = cal(postfix(S))
+
+    print("#%d %d" % (t, result))
+
+# 4408. 자기 방으로 돌아가기
+# 출발점 > 도착점 인 경우를 고려하자!
+
+T = int(input())
+for t in range(1, T+1):
+    # (1, 2) (3, 4) 등 둘씩 짝을 지어 복도를 공유하므로 겹치는 경로 체크할 배열 크기는 200
+    room = [0]*201
+    N = int(input())
+    for _ in range(N):
+        s, e = map(int, input().split())
+        # 출발점 > 도착점인 경우 편의상 둘을 바꿈
+        if s > e:
+            s, e = e, s
+        # s, e가 홀수인 경우 짝수로 보정
+        if s % 2:
+            s += 1
+        if e % 2:
+            e += 1
+        # 각 학생별로 지나는 경로에 +1
+        for i in range(s//2, (e//2)+1):
+            room[i] += 1
+    # 가장 많이 겹친 수만큼 시간이 걸릴 것!
+    time = max(room)
+    print("#%d %d" % (t, time))
