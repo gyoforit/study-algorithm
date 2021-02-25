@@ -850,3 +850,58 @@ for t in range(1, T+1):
         else:
             cnt += 1
     print("#%d %s" % (t, result))
+
+# 210225
+# 4615. 재미있는 오셀로 게임
+# drc 중복이었다... 실수 없게 꼼꼼히 확인..!
+drc = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
+
+def game(c, r, color):
+    board[r][c] = color
+    for i in range(8):
+        nr = r+drc[i][0]
+        nc = c+drc[i][1]
+        check = []
+        while True:
+            # 이동한 인덱스가 범위 벗어나면 무효 - 임시 리스트 초기화 후 break
+            if nr < 1 or nr > N or nc < 1 or nc > N:
+                check = []
+                break
+            # 0이면 빈 자리이므로 무효 - 임시 리스트 초기화 후 break
+            elif board[nr][nc] == 0:
+                check = []
+                break
+            # 같은 색깔이면 break
+            elif board[nr][nc] == color:
+                break
+            # 다른 색깔이면 임시 리스트에 인덱스 저장
+            elif board[nr][nc] == 3 - color:
+                check.append((nr, nc))
+            # 해당 방향으로 한칸 더 이동
+            nr += drc[i][0]
+            nc += drc[i][1]
+        # 반복 종료 후 임시 리스트에 있는 인덱스들을 color 칠함
+        for x, y in check:
+            board[x][y] = color
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    board = []
+    for _ in range(N+2):
+        board.append([0]*(N+2))
+    mid = N//2
+    board[mid][mid], board[mid+1][mid+1] = 2, 2
+    board[mid][mid+1], board[mid+1][mid] = 1, 1
+    for _ in range(M):
+        c, r, color = map(int, input().split())
+        game(c, r, color)
+    # 색깔별로 개수 세기
+    b, w = 0, 0
+    for i in range(1, N+1):
+        for j in range(1, N+1):
+            if board[i][j] == 1:
+                b += 1
+            elif board[i][j] == 2:
+                w += 1
+    print("#%d %d %d" % (t, b, w))
