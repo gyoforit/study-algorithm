@@ -905,3 +905,67 @@ for t in range(1, T+1):
             elif board[i][j] == 2:
                 w += 1
     print("#%d %d %d" % (t, b, w))
+
+# 210226
+# 1209. [S/W 문제해결 기본] 2일차 - Sum
+for _ in range(10):
+    N = int(input())
+    grid = []
+    for _ in range(100):
+        grid.append(list(map(int, input().split())))
+    # print(grid)
+    mx = 0
+    # 행검사/열검사
+    for r in range(100):
+        tmp = 0
+        for c in range(100):
+            tmp += grid[r][c]
+        # print(tmp)
+        if tmp > mx:
+            mx = tmp
+
+        tmp = 0
+        for c in range(100):
+            tmp += grid[c][r]
+        # print(tmp)
+        if tmp > mx:
+            mx = tmp
+
+    drc = [[1, 1], [1, -1]]
+    x, y = 0, 0
+    dx, dy = drc[0][0], drc[0][1]
+    # 대각선검사
+    tmp = 0
+    for i in range(100):
+        tmp += grid[x+(dx*i)][y+(dy*i)]
+    # print(tmp2)
+    if tmp > mx:
+        mx = tmp
+
+    tmp = 0
+    p, q = 0, 99
+    dp, dq = drc[1][0], drc[1][1]
+    for j in range(100):
+        tmp += grid[p+(dp*j)][q+(dq*j)]
+    # print(tmp3)
+    if tmp > mx:
+        mx = tmp
+
+    print("#%d %d" % (N, mx))
+
+# 4466. 최대 성적표 만들기
+T = int(input())
+for t in range(1, T+1):
+    N, K = map(int, input().split())
+    score = list(map(int, input().split()))
+    # K번 선택정렬!
+    for i in range(K):
+        mx_idx = i
+        for j in range(i+1, N):
+            if score[j] > score[mx_idx]:
+                mx_idx = j
+        score[mx_idx], score[i] = score[i], score[mx_idx]
+
+    result = sum(score[0:K])
+    print(score)
+    print("#%d %d" % (t, result))
