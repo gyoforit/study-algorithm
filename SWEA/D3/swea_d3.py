@@ -969,3 +969,14 @@ for t in range(1, T+1):
     result = sum(score[0:K])
     print(score)
     print("#%d %d" % (t, result))
+
+# 210228
+# 6019. 기차 사이의 파리
+T = int(input())
+for t in range(1, T+1):
+    D, A, B, F = map(int, input().split())
+    # 두 기차가 충돌하기까지 걸리는 시간 = x
+    x = D/(A+B)
+    # 파리의 속력에 x를 곱하면 답
+    result = x*F
+    print("#%d %.10f" % (t, result))
