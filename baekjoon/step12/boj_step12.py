@@ -24,3 +24,34 @@ for j in range(len(age)-1, -1, -1):
     result[cnt[age[j]]] += str(age[j]) + ' ' + name[j]
 for r in result:
     print(r)
+
+#210228
+# 2750. 수 정렬하기
+N = int(input())
+nums = []
+for _ in range(N):
+    nums.append(int(input()))
+
+for i in range(N-1, -1, -1): # 비교 끝 인덱스
+    for j in range(0, i):
+        if nums[j] > nums[j+1]:
+            nums[j], nums[j+1] = nums[j+1], nums[j]
+
+for n in nums:
+    print(n)
+
+# 10989. 수 정렬하기 3
+# 인덱스랑 맞춤 -> 등장횟수 카운트해서 카운트수만큼 인덱스를 출력
+import sys
+N = int(input())
+
+num = [0] * 10001
+
+for _ in range(N):
+    i = int(sys.stdin.readline())
+    num[i] += 1
+
+for n in range(10001):
+    if num[n] != 0:
+        for _ in range(num[n]):
+            print(n)

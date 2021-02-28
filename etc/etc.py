@@ -174,3 +174,41 @@ for i in range(1, M+1):
     N -= array[i]
     result += array[i]*N
 print(result)
+
+# 210228
+# 이것이 코딩 테스트다_구현
+# 예제 1. 상하좌우
+# 이중 리스트 - 패딩 사용해서 인덱스 접근 용이하게..
+# 델타로도 풀 수 있을듯!
+N = int(input())
+map = [[0]*(N+2)]
+for _ in range(N):
+    map.append([0]+([1]*N)+[0])
+map.append([0]*(N+2))
+move = list(input().split())
+r, c = 1, 1
+for m in move:
+    if m == 'L':
+        if map[r][c-1] != 0:
+            c -= 1
+    elif m == 'R':
+        if map[r][c+1] != 0:
+            c += 1
+    elif m == 'U':
+        if map[r-1][c] != 0:
+            r -= 1
+    else:
+        if map[r+1][c] != 0:
+            r += 1
+print(r, c, end=' ')
+
+# 예제 2. 시각
+# 완전탐색!
+cnt = 0
+N = int(input())
+for h in range(N+1):
+    for m in range(0, 60):
+        for s in range(0, 60):
+            if '3' in str(s) or '3' in str(m) or '3' in str(h):
+                cnt += 1
+print(cnt)
