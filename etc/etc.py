@@ -212,3 +212,20 @@ for h in range(N+1):
             if '3' in str(s) or '3' in str(m) or '3' in str(h):
                 cnt += 1
 print(cnt)
+
+# 210301
+# 실전 2. 왕실의 나이트
+board = [[0]*10]
+for _ in range(8):
+    board.append([0]+([1]*8)+[0])
+board.append([0]*10)
+drc = [[-2, 1], [-1, 2], [1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1]]
+now = input()
+r, c = ord(now[0])-96, int(now[1])
+cnt = 0
+for i in range(8):
+    dr = drc[i][0]
+    dc = drc[i][1]
+    if r+dr > 1 and r+dc > 1 and board[r+dr][c+dc] == 1:
+        cnt += 1
+print(cnt)
