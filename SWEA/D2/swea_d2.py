@@ -937,6 +937,150 @@ for t in range(1, T + 1):
     DFS_subset(0, 0, 0)
     print('#%d %d' % (t, cnt))
 
+# 210302
+# 4875. [파이썬 S/W 문제해결 기본] 5일차 - 미로
+# 재귀 안 쓴 풀이
+drc = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+def DFS_maze(arr, sr, sc):
+    visited = []
+    stack = [(sr, sc)]
+    # 경로 유무 정보를 담는 flag
+    flag = 0
+    while stack:
+        # stack에서 pop한 요소를 현재 위치로 설정
+        now_r, now_c = stack.pop()
+        # 현재 위치를 방문하지 않았다면 방문 체크 후 도착점인지 확인
+        if (now_r, now_c) not in visited:
+            visited.append((now_r, now_c))
+            # 도착점이면 flag를 1로 바꾼 후 break
+            if arr[now_r][now_c] == 3:
+                flag = 1
+                break
+        # 현재 위치에서 상하좌우 살펴봄
+        for i in range(4):
+            nr = now_r+drc[i][0]
+            nc = now_c+drc[i][1]
+            # 이동하고자 하는 위치가 1이 아닌 동시에 방문한 곳이 아니라면 stack에 append
+            if arr[nr][nc] != 1 and (nr, nc) not in visited:
+                stack.append((nr, nc))
+    return flag
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    maze = [[1]+list(map(int, input()))+[1] for _ in range(N)]
+    maze.insert(0, [1]*(N+2))
+    maze.append([1]*(N+2))
+    sr, sc = 0, 0
+    # 시작점의 행/열 인덱스 찾기
+    for r in range(1, N+1):
+        for c in range(1, N+1):
+            if maze[r][c] == 2:
+                sr, sc = r, c
+                break
+    result = DFS_maze(maze, sr, sc)
+    print("#%d %d" % (t, result))
+
+# 4874. [파이썬 S/W 문제해결 기본] 5일차 - Forth
+def forth(arr):
+    stack = []
+    for c in arr:
+        if c not in "+-*/.":
+            stack.append(c)
+        elif c == '.':
+            # . 나왔을 때 stack의 길이 확인. 1개보다 많으면 error
+            if len(stack) == 1:
+                return stack.pop()
+            else:
+                return "error"
+        elif c in "+-*/":
+            # 연산자가 나왔을 때 stack 속 요소가 2개보다 적으면 error
+            if len(stack) < 2:
+                return "error"
+            else:
+                B = int(stack.pop())
+                A = int(stack.pop())
+                if c == '+':
+                    stack.append(A + B)
+                elif c == '-':
+                    stack.append(A - B)
+                elif c == '*':
+                    stack.append(A * B)
+                else:
+                    # (혹시몰라서) 나누는 숫자가 0이면 zero division으로 error
+                    if B == 0:
+                        return "error"
+                    else:
+                        stack.append(int(A/B))
+
+T = int(input())
+for t in range(1, T+1):
+    calc = input().split()
+    result = forth(calc)
+    print("#%d %s" % (t, result))
+
+# 4880. [파이썬 S/W 문제해결 기본] 5일차 - 토너먼트 카드게임
+# 가위바위보 게임하는 함수
+def game(a, b):
+    if (cards[a], cards[b]) == (1, 3) or (cards[a], cards[b]) == (2, 1) or (cards[a], cards[b]) == (3, 2):
+        return a
+    elif cards[a] == cards[b]:
+        return a
+    else:
+        return b
+
+# 토너먼트 매칭시키는 함수
+def tnmt(s, e):
+    # 종료조건: 한명만 남으면 리턴
+    if s == e:
+        return s
+    else:
+        mid = (s+e)//2
+        first = tnmt(s, mid)
+        second = tnmt(mid+1, e)
+        return game(first, second)
+
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    cards = list(map(int, input().split()))
+    winner = tnmt(0, N-1) + 1
+    print("#%d %d" % (t, winner))
+
+# 4881. [파이썬 S/W 문제해결 기본] 5일차 - 배열 최소 합
+# 열 인덱스를 순열로 뽑아내기
+def minsum(r):
+    global tmp, mn
+    # 제한시간 초과 방지: 최솟값보다 크면 return
+    if tmp > mn:
+        return
+    # 최솟값보다 작으면 새로 갱신
+    if r == N:
+        if tmp < mn:
+            mn = tmp
+        return
+    # 인덱스 뽑아내는 동시에 해당 순열에 따른 배열 합 구함
+    for c in range(N):
+        if check[c] == 0:
+            check[c] = 1
+            tmp += num[r][c]
+            minsum(r+1)
+            check[c] = 0
+            tmp -= num[r][c]
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    num = [list(map(int, input().split())) for _ in range(N)]
+    check = [0]*N
+    tmp, mn = 0, 10000000
+    minsum(0)
+    print("#%d %d" % (t, mn))
+
+
+
 
 
 

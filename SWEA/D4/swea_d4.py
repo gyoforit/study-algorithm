@@ -185,3 +185,62 @@ for t in range(1, T+1):
     # 가장 많이 겹친 수만큼 시간이 걸릴 것!
     time = max(room)
     print("#%d %d" % (t, time))
+
+# 1224. [S/W 문제해결 기본] 6일차 - 계산기3
+# 전에 제출한 코드가 이 문제에선 오류가 나서 우선순위를 dictionary로 수정함
+isp = {'*': 2, '/': 2, '+': 1, '-': 1, '(': 0}
+icp = {'*': 2, '/': 2, '+': 1, '-': 1, '(': 3}
+
+# 후위표기법으로 변환해주는 함수
+def postfix(S):
+    after = ''
+    stack = []
+    for s in S:
+        if s.isdigit():
+            after += s
+        elif s == ')':
+            while True:
+                if stack[-1] == '(':
+                    stack.pop()
+                    break
+                after += stack.pop()
+        else:
+            if not stack or s == '(' or icp.get(s) > isp.get(stack[-1]):
+                stack.append(s)
+            else:
+                while True:
+                    if not stack or icp.get(s) > isp.get(stack[-1]):
+                        break
+                    after += stack.pop()
+                stack.append(s)
+    # 수식의 끝까지 도달한 후, stack이 빌 때까지 계속 pop
+    while stack:
+        after += stack.pop()
+    return after
+
+# 후위표기법을 계산하는 함수
+def cal(A):
+    stack = []
+    for a in A:
+        if a not in '+-*/':
+            stack.append(a)
+        else:
+            y = int(stack.pop())
+            x = int(stack.pop())
+            if a == '+':
+                ans = x+y
+            elif a == '-':
+                ans = x-y
+            elif a == '*':
+                ans = x*y
+            else:
+                ans = x/y
+            stack.append(ans)
+    return stack.pop()
+
+for t in range(1, 11):
+    L = int(input())
+    S = input()
+    result = cal(postfix(S))
+
+    print("#%d %d" % (t, result))

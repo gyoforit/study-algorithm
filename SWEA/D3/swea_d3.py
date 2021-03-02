@@ -980,3 +980,44 @@ for t in range(1, T+1):
     # 파리의 속력에 x를 곱하면 답
     result = x*F
     print("#%d %.10f" % (t, result))
+
+# 210302
+# 1225. [S/W 문제해결 기본] 7일차 - 암호생성기
+def make_pw(arr):
+    l = [1, 2, 3, 4, 5]
+    i = 0
+    while True:
+        x = arr.pop(0)
+        if x-l[i] <= 0:
+            arr.append(0)
+            break
+        else:
+            arr.append(x-l[i])
+        i += 1
+        if i == 5:
+            i = 0
+    return arr
+
+for _ in range(1, 11):
+    N = int(input())
+    code = list(map(int, input().split()))
+    complete = ' '.join(map(str, make_pw(code)))
+    print("#%d %s" % (N, complete))
+
+# 1220. [S/W 문제해결 기본] 5일차 - Magnetic
+for t in range(1, 11):
+    N = int(input())
+    table = [list(map(int, input().split())) for _ in range(N)]
+    n_table = list(zip(*table))
+    cnt = 0
+    for r in range(N):
+        last = 0
+        for c in range(0, N):
+            if n_table[r][c] == 2:
+                if last == 1:
+                    cnt += 1
+                last = n_table[r][c]
+            elif n_table[r][c] == 1:
+                last = n_table[r][c]
+
+    print("#%d %d" % (t, cnt))
