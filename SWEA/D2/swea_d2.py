@@ -1079,9 +1079,56 @@ for t in range(1, T+1):
     minsum(0)
     print("#%d %d" % (t, mn))
 
+# 210303
+# 11624. 큐
+front = -1
+rear = -1
+N = 3
+queue = [0] * N
+def enQueue(queue, data):
+    global rear
+    if rear >= N-1:
+        print("Queue overflow")
+        return
+    rear += 1
+    queue[rear] = data
 
+def deQueue(queue):
+    global front
+    front += 1
+    if front == rear:
+        print("Queue underflow")
+        return
+    return queue[front]
 
+T = int(input())
+num = map(int, input().split())
+for n in num:
+    enQueue(queue, n)
+result = ' '.join(map(str, queue))
+print("#%d %s" % (T, result))
 
+# 11625. BFS
+def BFS(s):
+    visited = [0]*(V+1)
+    queue = []
+    visit = []  # 이동 경로 파악용 리스트
+    visited[s] = True
+    queue.append(s)
+    while queue:
+        target = queue.pop(0)
+        visit.append(target)
+        for x in AL[target]:
+            if visited[x]: continue
+            visited[x] = True
+            queue.append(x)
+    return visit
 
-
-
+T = int(input())
+V, E = map(int, input().split())
+AL = [[] for _ in range(V+1)]
+for _ in range(E):
+    m, n = map(int, input().split())
+    AL[m].append(n)
+route = ' '.join(map(str, BFS(1)))
+print("#%d %s" % (T, route))

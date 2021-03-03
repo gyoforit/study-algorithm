@@ -1021,3 +1021,33 @@ for t in range(1, 11):
                 last = n_table[r][c]
 
     print("#%d %d" % (t, cnt))
+
+# 1225. [S/W 문제해결 기본] 7일차 - 암호생성기
+# 원형 queue 활용. 속도는 조금 더 느림
+for _ in range(10):
+    N = int(input())
+    Q = [0] + list(map(int, input().split()))
+    q = len(Q)
+    front = 0
+    rear = q-1
+    i = 1
+    while True:
+        # deQueue
+        front = (front+1) % q
+        target = Q[front]
+        target -= i
+        # enQueue
+        if target <= 0:
+            target = 0
+        rear = (rear+1) % q
+        Q[rear] = target
+        # 종료조건
+        if target == 0:
+            break
+        i += 1
+        if i > 5:
+            i = 1
+    result = []
+    for i in range(front+1, front+q):
+        result.append(Q[(i%q)])
+    print("#%d %s" % (N, ' '.join(map(str, result))))
