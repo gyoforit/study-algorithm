@@ -1051,3 +1051,176 @@ for _ in range(10):
     for i in range(front+1, front+q):
         result.append(Q[(i%q)])
     print("#%d %s" % (N, ' '.join(map(str, result))))
+
+# 210304
+# 5099. [파이썬 S/W 문제해결 기본] 6일차 - 피자 굽기
+# 피자는 가만히, 인덱스만 queue에서 왔다갔다
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    pizza = list(map(int, input().split()))
+    oven = [i for i in range(N)]
+    idx = N-1
+    while True:
+        if len(oven) == 1:
+            break
+        target = oven.pop(0)
+        pizza[target] //= 2
+        if pizza[target] > 0:
+            oven.append(target)
+        elif pizza[target] == 0:
+            idx += 1
+            if idx > M-1:
+                continue
+            oven.append(idx)
+    print("#%d %d" % (t, oven[0]+1))
+
+# 수정
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    pizza = list(map(int, input().split()))
+    oven = [i for i in range(N)]
+    idx = N
+    while len(oven) > 1:
+        target = oven.pop(0)
+        pizza[target] //= 2
+        if pizza[target] > 0:
+            oven.append(target)
+        elif idx < M:
+            oven.append(idx)
+            idx += 1
+    print("#%d %d" % (t, oven[0]+1))
+
+# 5105. [파이썬 S/W 문제해결 기본] 6일차 - 미로의 거리
+drc = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+def BFS_maze(sr, sc, er, ec):
+    distance = [[0]*(N+2) for _ in range(N+2)]
+    queue = [(sr, sc)]
+    distance[sr][sc] = -1
+    cnt = 1
+    while queue:
+        for _ in range(len(queue)):
+            tr, tc = queue.pop(0)
+            for i in range(4):
+                nr, nc = tr+drc[i][0], tc+drc[i][1]
+                if maze[nr][nc] != 1 and distance[nr][nc] == 0:
+                    distance[nr][nc] = cnt
+                    queue.append((nr, nc))
+        cnt += 1
+    result = distance[er][ec]
+    return result-1 if result > 0 else 0
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    maze = [[1]*(N+2)]
+    for _ in range(N):
+        maze.append([1] + list(map(int, input())) + [1])
+    maze.append([1]*(N+2))
+    sr, sc = 0, 0
+    er, ec = 0, 0
+    for r in range(1, N+1):
+        for c in range(1, N+1):
+            if maze[r][c] == 2:
+                sr, sc = r, c
+            elif maze[r][c] == 3:
+                er, ec = r, c
+
+    print("#%d %d" % (t, BFS_maze(sr, sc, er, ec)))
+
+# 4751. 다솔이의 다이아몬드 장식
+T = int(input())
+for t in range(1, T+1):
+    S = input()
+    l = len(S)
+    s1 = '..' + ('#...' * l)
+    s2 = ('.#' *l*2) + '.'
+    s3 = '#'
+    for i in range(l):
+        s3 += '.' + S[i] + '.#'
+    print(s1[:-1])
+    print(s2)
+    print(s3)
+    print(s2)
+    print(s1[:-1])
+
+# 1240. [S/W 문제해결 응용] 1일차 - 단순 2진 암호코드
+# 의지의 한국인 코드... 1 찾은 열에서 rstrip(0)하면 되는 거였다 ㅠㅠ
+
+# 배열에서 1 찾기
+def find_1(arr, N, M):
+    flag = 0
+    tr, tc = 0, 0
+    for c in range(M):
+        for r in range(N):
+            if arr[r][c] == 1:
+                tr, tc = r, c
+                flag = 1
+                break
+        if flag == 1:
+            break
+    return (tr, tc)
+
+# check 배열 - 어느 인덱스에 0/1로 바뀌는지에 따라서 첫번째 숫자를 파악
+def check(tr, tc):
+    c = [[2, 3, 4], [2, 4, 5], [1, 3, 5], [4, 5, 6], [1, 4, 6],
+        [2, 5, 6], [1, 2, 6], [3, 4, 6], [2, 3, 6], [1, 2, 4]]
+    checklist = []
+    now = 1
+    for i in range(1, 7):
+        if pw[tr+i][tc+i] != now:
+            checklist.append(i)
+            now = pw[tr+i][tc+i]
+        if len(checklist) == 3:
+            break
+    for j in range(10):
+        if checklist == c[j]:
+            return j
+
+# 두번째 숫자의 시작열 찾기 (첫번째 숫자가 뭐냐에 따라 달라짐)
+def get_start(x, tc):
+    if x == 0 or x == 9:
+        return tc+4
+    elif x == 1 or x == 2:
+        return tc+5
+    else:
+        return tc+6
+
+# 암호 검증
+def screen(password):
+    even = 0
+    odd = 0
+    for i in range(len(password)):
+        if i % 2 == 0:
+            odd += password[i]
+        elif i % 2 == 1 and i != 7:
+            even += password[i]
+    total = odd*3 + even + password[7]
+    if total % 10:
+        return 0
+    else:
+        return sum(password)
+
+# 암호 해독용 dictionary
+dic = {'0001101': 0, '0011001': 1, '0010011': 2, '0111101': 3,
+       '0100011': 4, '0110001': 5, '0101111': 6, '0111011': 7, '0110111': 8, '0001011': 9}
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    pw = [list(map(int, input())) for _ in range(N)]
+    (tr, tc) = find_1(pw, N, M)
+    p1 = check(tr, tc)
+    nc = get_start(p1, tc)
+    password = [p1]
+    for i in range(nc, M, 7):
+        tmp = ''.join(map(str, pw[tr][i:i+7]))
+        # print(tmp)
+        x = dic.get(tmp)
+        password.append(x)
+        if len(password) == 8:
+            break
+
+    result = screen(password)
+    print("#%d %d" % (t, result))

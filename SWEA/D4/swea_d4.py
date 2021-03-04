@@ -244,3 +244,33 @@ for t in range(1, 11):
     result = cal(postfix(S))
 
     print("#%d %d" % (t, result))
+
+# 210304
+# 1226. [S/W 문제해결 기본] 7일차 - 미로1
+drc = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+def BFS_maze(sr, sc):
+    visited = [[0]*16 for _ in range(16)]
+    queue = [(sr, sc)]
+    visited[sr][sc] = True
+    while queue:
+        tr, tc = queue.pop(0)
+        if maze[tr][tc] == 3:
+            return 1
+        for i in range(4):
+            nr = tr+drc[i][0]
+            nc = tc+drc[i][1]
+            if maze[nr][nc] != 1 and visited[nr][nc] == 0:
+                visited[nr][nc] = True
+                queue.append((nr, nc))
+    return 0
+
+for _ in range(10):
+    N = int(input())
+    maze = [list(map(int, input())) for _ in range(16)]
+    for r in range(16):
+        for c in range(16):
+            if maze[r][c] == 2:
+                sr, sc = r, c
+    result = BFS_maze(sr, sc)
+
+    print("#%d %d" % (N, result))

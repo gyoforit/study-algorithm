@@ -1132,3 +1132,36 @@ for _ in range(E):
     AL[m].append(n)
 route = ' '.join(map(str, BFS(1)))
 print("#%d %s" % (T, route))
+
+# 210304
+# 5102. [파이썬 S/W 문제해결 기본] 6일차 - 노드의 거리
+def BFS(s, e):
+    visited = [0]*(V+1)
+    queue = []
+    distance = [0]*(V+1)
+    queue.append(s)
+    visited[s] = True
+    distance[s] = 0
+    cnt = 1
+    while queue:
+        for _ in range(len(queue)):
+            target = queue.pop(0)
+            for x in AL[target]:
+                if visited[x]: continue
+                visited[x] = True
+                distance[x] = cnt
+                queue.append(x)
+        cnt += 1
+    return distance[e]
+
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AL = [[] for _ in range(V+1)]
+    for _ in range(E):
+        s, e = map(int, input().split())
+        AL[s].append(e)
+        AL[e].append(s) # 무방향(양방향) 일 때 이것도 꼭 써줘야 함!
+    S, E = map(int, input().split())
+
+    print("#%d %s" % (t, BFS(S, E)))
