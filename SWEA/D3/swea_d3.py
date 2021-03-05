@@ -1224,3 +1224,49 @@ for t in range(1, T+1):
 
     result = screen(password)
     print("#%d %d" % (t, result))
+
+# 210305
+# 5215. 햄버거 다이어트
+# 첫 제출
+def hamburger(level, start, score, cal):
+    global mx
+    if cal > L: return
+    if score > mx: mx = score
+    if level >= N: return
+
+    for i in range(start, N):
+        hamburger(level+1, i+1, score+ingredient[i][0], cal+ingredient[i][1])
+
+T = int(input())
+for t in range(1, T+1):
+    N, L = map(int, input().split())
+    ingredient = [list(map(int, input().split())) for _ in range(N)]
+    mx = 0
+    hamburger(0, 0, 0, 0)
+    print("#%d %d" % (t, mx))
+
+# 수정
+def hamburger(start, score, cal): # level은 start와 같은 기능을 하니까 빼 버리기
+    global mx
+    if score > mx:
+        mx = score
+    for i in range(start, N):
+        if expect[i] + score <= mx: break # 이 지점에서 예상되는 최선의 점수 <= mx 라면 필요없음
+        if cal + cals[i] > L: continue # 칼로리 제한 넘으면 필요없으니 continue
+        hamburger(i+1, score+scores[i], cal+cals[i])
+T = int(input())
+for t in range(1, T+1):
+    N, L = map(int, input().split())
+    ingrdnt = [list(map(int, input().split())) for _ in range(N)]
+    scores = [ingrdnt[i][0] for i in range(N)]
+    cals = [ingrdnt[i][1] for i in range(N)]
+    # 가지치기를 위한 최선의 점수 예상
+    expect = [0]*N
+    expect[N-1] = scores[N-1]
+    for i in range(N-2, -1, -1): # N-2, N-1, ...
+        expect[i] = expect[i+1] + scores[i]
+        # expect[0] = expect[1] + scores[0] = scores[4] + 3 + 2 + 1 ...
+        # -> 재료 중 0번째꺼 선택했을 때 나올 수 있는 최선의 점수는 1, 2, 3, 4번째 다 더한것!
+    mx = 0
+    hamburger(0, 0, 0)
+    print("#%d %d" % (t, mx))

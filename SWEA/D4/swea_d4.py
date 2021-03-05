@@ -274,3 +274,102 @@ for _ in range(10):
     result = BFS_maze(sr, sc)
 
     print("#%d %d" % (N, result))
+
+# 210305
+# 1258. [S/W 문제해결 응용] 7일차 - 행렬찾기
+drc = [[1, 0], [0, 1]]
+
+# 행렬을 탐색하는 함수 - 항상 좌상단 모서리에서 시작하기 때문에 델타는 (우,하)방향만 존재
+def BFS_search(r, c):
+    global visited
+    er, ec = r, c
+    queue = [(r, c)]
+    while queue:
+        tr, tc = queue.pop(0)
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0<=nr<=N-1 and 0<=nc<=N-1:
+                if changgo[nr][nc] != 0:
+                    changgo[nr][nc] = 0
+                    queue.append((nr, nc))
+                    if nr > er: er = nr
+                    if nc > ec: ec = nc
+    height = er-r+1
+    width = ec-c+1
+    return height, width
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    changgo = [list(map(int, input().split())) for _ in range(N)]
+    matrix = []
+    for r in range(N):
+        for c in range(N):
+            if changgo[r][c] != 0:
+                h, w = BFS_search(r, c)
+                matrix.append((h, w, h*w))
+    # 여러가지 기준으로 정렬할 땐 sorted의 key를 사용
+    matrix = sorted(matrix, key=lambda x : (x[2], x[0]))
+    result = []
+    for H, W, S in matrix:
+        result.append(H)
+        result.append(W)
+    print("#%d %d %s" % (t, len(matrix), ' '.join(map(str, result))))
+
+# 4613. 러시아 국기 같은 깃발
+# 중복 순열!
+def perm(idx, S):
+    global ans
+    # 유망성 검사 - 이후 작업은 의미 없으니까 가지치기
+    if S > N:
+        return
+
+    # 세가지 색깔이 각각 몇줄인지 결정 되면
+    if idx == 3:
+        if S == N:
+            cnt = 0 # 바꿔야 하는 칸 개수를 담음
+
+            # 구분하는 지점
+            st = sel[0]
+            st2 = st + sel[1]
+
+            # 흰색이 아닌 칸에 흰색 칠하기
+            for i in flag[:st]:
+                for j in i:
+                    if j != 'W':
+                        cnt += 1
+
+            # 파란색 칠하기
+            for i in flag[st:st2]:
+                for j in i:
+                    if j != 'B':
+                        cnt += 1
+
+            # 빨간색 칠하기
+            for i in flag[st2:]:
+                for j in i:
+                    if j != 'R':
+                        cnt += 1
+
+            # 최솟값이면 갱신
+            if cnt < ans:
+                ans = cnt
+        return
+
+    for i in range(1, N-1): #각각 한 줄씩은 보장해야 하니까 1부터 시작!
+        sel[idx] = i
+        perm(idx+1, S+i)
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    flag = [list(input()) for _ in range(N)]
+    # W, B, R을 각각 몇줄씩 칠할지 결정하는 sel
+    sel = [0]*3
+    ans = 10000000
+
+    # idx, 중간 합(몇줄을 뽑았는지)
+    perm(0, 0)
+
+    print("#%d %d" % (t, ans))
+    
