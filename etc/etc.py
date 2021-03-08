@@ -229,3 +229,45 @@ for i in range(8):
     if r+dr > 1 and r+dc > 1 and board[r+dr][c+dc] == 1:
         cnt += 1
 print(cnt)
+
+# 210308
+# 실전 3. 게임 개발
+N, M = map(int, input().split()) # 세로, 가로
+r, c, d = map(int, input().split()) # 행, 열, 방향
+game = [list(map(int, input().split())) for _ in range(N)]
+# 방문 기록 체크하기 위한 visited 이중배열
+visited = [[0]*M for _ in range(N)]
+# 출발점 방문 체크
+visited[r][c] = 1
+# 방향 문제에 따라 북-동-남-서 순
+drc = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+cnt = 0
+while True:
+    # 네 방향 순서대로 돌면서
+    for i in range(d, d-4, -1):
+        if i < 0:
+            nr, dr = r+drc[4+i][0], c+drc[4+i][1]
+        nr, nc = r+drc[i][0], c+drc[i][1]
+        # 만약 가려는 곳이 육지이고 + 방문하지 않았다면
+        if game[nr][nc] != 1 and visited[nr][nc] == 0:
+            # 현 위치로 조정, 방향도 조정
+            r, c = nr, nc
+            d = 4+i if i < 0 else i
+            # 방문체크
+            visited[r][c] = 1
+            # 움직인 횟수 +1
+            cnt += 1
+            break
+    # for문을 다 돌았다면 = 네 방향이 전부 바다 or 방문기록이 있다면
+    else:
+        # 바라보는 방향의 반대로 한칸 이동
+        if d >= 2:
+            r, c = r+drc[d-2][0], c+drc[d-2][1]
+        else:
+            r, c = r+drc[d+2][0], c+drc[d+2][1]
+        # 만약 이동할 곳이 바다라면 종료
+        if game[r][c] == 1:
+            break
+        # 위의 if를 만나지 않았다면 육지이므로 cnt += 1
+        cnt += 1
+print(cnt)
