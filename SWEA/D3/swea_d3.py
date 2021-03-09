@@ -1270,3 +1270,59 @@ for t in range(1, T+1):
     mx = 0
     hamburger(0, 0, 0)
     print("#%d %d" % (t, mx))
+
+# 210309
+# 3142. 영준이와 신비한 뿔의 숲
+# 예외 처리 잘 하기!
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    if M*2 == N:
+        twin = N//2
+        unicorn = 0
+    elif N == M:
+        twin = 0
+        unicorn = N
+    else:
+        twin = N%M
+        unicorn = M-twin
+    print("#%d %d %d" % (t, unicorn, twin))
+
+# 10200. 구독자 전쟁
+T = int(input())
+for t in range(1, T+1):
+    N, A, B = map(int, input().split())
+    mx = min(A, B)
+    mn = A+B-N
+    if mn < 0:
+        mn = 0
+
+    print("#%d %d %d" % (t, mx, mn))
+
+# 5515. 2016년 요일 맞추기
+days = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+date = [3, 4, 5, 6, 0, 1, 2]
+def howmanydays(m, d):
+    result = 0
+    if m == 1:
+        return d
+    else:
+        for i in range(1, m):
+            result += days[i]
+        return result+d
+
+T = int(input())
+for t in range(1, T+1):
+    m, d = map(int, input().split())
+    D = howmanydays(m, d)
+    ans = date[D%7]
+
+    print("#%d %d" % (t, ans))
+
+# 5162. 두가지 빵의 딜레마
+T = int(input())
+for t in range(1, T+1):
+    A, B, C = map(int, input().split())
+    result = C // (min(A, B))
+
+    print("#%d %d" % (t, result))

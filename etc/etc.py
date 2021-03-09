@@ -271,3 +271,34 @@ while True:
         # 위의 if를 만나지 않았다면 육지이므로 cnt += 1
         cnt += 1
 print(cnt)
+
+# 210309
+# 이것이 코딩 테스트다_DFS/BFS
+# DFS/BFS 실전 3. 음료수 얼려 먹기
+drc = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+def BFS_ice (r, c):
+    global cnt
+    queue = [(r, c)]
+    ice[r][c] = '1'
+    while queue:
+        tr, tc = queue.pop(0)
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0 <= nr < N and 0 <= nc < M and ice[nr][nc] == '0':
+                queue.append((nr, nc))
+                ice[nr][nc] = '1'
+    cnt += 1
+
+N, M = map(int, input().split())
+ice = []
+for _ in range(N):
+    tmp = []
+    tmp.extend(input())
+    ice.append(tmp)
+cnt = 0
+for r in range(N):
+    for c in range(M):
+        if ice[r][c] == '0':
+            BFS_ice(r, c)
+
+print(cnt)
