@@ -274,7 +274,7 @@ print(cnt)
 
 # 210309
 # 이것이 코딩 테스트다_DFS/BFS
-# DFS/BFS 실전 3. 음료수 얼려 먹기
+# 실전 3. 음료수 얼려 먹기
 drc = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 def BFS_ice (r, c):
     global cnt
@@ -302,3 +302,27 @@ for r in range(N):
             BFS_ice(r, c)
 
 print(cnt)
+
+# 210310
+# 실전 4. 미로 탈출
+# 최소 칸수 = BFS
+# 최단경로 파악법 이제야 깨달음!!
+drc = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+def BFS_maze(r, c):
+    queue = [(r, c)]
+    visited[r][c] = 1
+    while queue:
+        tr, tc = queue.pop(0)
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0<=nr<N and 0<=nc<M and maze[nr][nc] == 1 and visited[nr][nc] == 0:
+                queue.append((nr, nc))
+                maze[nr][nc] = maze[tr][tc] + 1
+                visited[nr][nc] = 1
+    return maze[N-1][M-1]
+
+N, M = map(int, input().split())
+maze = [list(map(int, input())) for _ in range(N)]
+visited = [[0]*M for _ in range(N)]
+result = BFS_maze(0, 0)
+print(result)
