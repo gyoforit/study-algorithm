@@ -373,3 +373,24 @@ for t in range(1, T+1):
 
     print("#%d %d" % (t, ans))
     
+# 210311
+# 1952. [모의 SW 역량테스트] 수영장
+'''
+DP로 접근!
+'''
+def get_min(n): # n월까지의 최소요금
+    if n == 1:
+        return min(plan[n]*d, m, q, y)
+    elif n == 2:
+        return min(get_min(1)+min(plan[n]*d, m), q, y)
+    elif n == 3:
+        return min(get_min(2)+min(plan[n]*d, m), q, y)
+    else:
+        return min(get_min(n-1)+min(plan[n]*d, m), get_min(n-2)+q, get_min(n-3)+q, y)
+
+T = int(input())
+for t in range(1, T+1):
+    d, m, q, y = map(int, input().split())
+    plan = [0] + list(map(int, input().split()))
+    result = get_min(12)
+    print("#%d %d" % (t, result))
