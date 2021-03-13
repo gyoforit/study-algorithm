@@ -394,3 +394,36 @@ for t in range(1, T+1):
     plan = [0] + list(map(int, input().split()))
     result = get_min(12)
     print("#%d %d" % (t, result))
+
+# 4012. [모의 SW 역량테스트] 요리사
+# N개 재료 중 N//2 뽑는 조합
+def choose(level, start):
+    global mn
+    if level >= (N//2):
+        B = [j for j in range(N) if j not in A]
+
+        tmp = abs(get_synergy(A)-get_synergy(B))
+        if tmp < mn:
+            mn = tmp
+        return
+
+    for i in range(start, N-(N//2)+level+1):
+        A[level] = i
+        choose(level+1, i+1)
+
+# 시너지 계산하는 함수
+def get_synergy(arr):
+    total = 0
+    for i in arr:
+        for j in arr:
+            total += synergy[i][j]
+    return total
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    synergy = [list(map(int, input().split())) for _ in range(N)]
+    mn = 987654321
+    A = [0] * (N // 2)
+    choose(0, 0)
+    print("#%d %d" % (t, mn))
