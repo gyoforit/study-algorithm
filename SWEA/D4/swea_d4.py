@@ -427,3 +427,41 @@ for t in range(1, T+1):
     A = [0] * (N // 2)
     choose(0, 0)
     print("#%d %d" % (t, mn))
+
+# 210313
+# 10966. 물놀이를 가자
+'''
+배운점: queue를 import해서 쓰면 성능이 더 좋다.
+직접 구현하는 경우 pop(0) 연산을 할 때 시간복잡도가 O(n)이지만
+import 해서 쓰는 경우 O(1)이기 때문!
+'''
+from collections import deque
+drc = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+T = int(input())
+for t in range(1, T + 1):
+    N, M = map(int, input().split())
+    grid = []
+    result = 0
+    visited = [[0] * M for _ in range(N)]
+    queue = deque()
+    # input 받는 동시에 'W'인것들 찾아서 다 append
+    # input이 string이기 때문에 한칸에 하나씩 안 넣어도 인덱스 접근 가능!!!
+    for r in range(N):
+        tmp = input()
+        grid.append(tmp)
+        for c in range(M):
+            if tmp[c] == 'W':
+                queue.append((r, c))
+
+    while queue:
+        tr, tc = queue.popleft()
+        for dr, dc in drc:
+            nr, nc = tr + dr, tc + dc
+            if 0 <= nr < N and 0 <= nc < M and visited[nr][nc] == 0 and grid[nr][nc] == 'L':
+                queue.append((nr, nc))
+                visited[nr][nc] = visited[tr][tc] + 1
+
+    for v in visited:
+        result += sum(v)
+
+    print("#%d %d" % (t, result))
