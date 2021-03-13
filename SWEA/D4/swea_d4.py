@@ -465,3 +465,43 @@ for t in range(1, T + 1):
         result += sum(v)
 
     print("#%d %d" % (t, result))
+
+# 1953. [모의 SW 역량테스트] 탈주범 검거
+from collections import deque
+'''
+문제풀 때 중요했던 것: 현재 파이프와 탐색하려는 파이프의 아다리(?)가 맞아야 된다는 것!!!
+'''
+drc = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+# pipe의 종류에 따라 탐색할 수 있는 델타값을 넣음
+pipe = [[], [0, 1, 2, 3], [0, 1], [2, 3], [0, 3], [1, 3], [1, 2], [0, 2]]
+# 델타 방향(0, 1, 2, 3)에 따라 모양이 맞지 않는 파이프의 번호를 넣음
+x = [[3, 4, 7], [3, 5, 6], [2, 6, 7], [2, 4, 5]]
+
+T = int(input())
+for t in range(1, T+1):
+    N, M, R, C, L = map(int, input().split())
+    tunnel = [list(map(int, input().split())) for _ in range(N)]
+    visited = [[0]*M for _ in range(N)]
+    cnt = 1
+    hour = 1
+    queue = deque()
+    queue.append((R, C))
+    visited[R][C] = 1
+    while hour < L:
+        hour += 1
+        for _ in range(len(queue)):
+            tr, tc = queue.popleft()
+            for i in pipe[tunnel[tr][tc]]:
+                nr = tr+drc[i][0]
+                nc = tc+drc[i][1]
+                # 범위 내 + 터널이 있음 + 아직 방문 안했다면
+                if 0<=nr<N and 0<=nc<M and tunnel[nr][nc] != 0 and visited[nr][nc] == 0:
+                    # 해당 터널이 아다리가 안 맞는 터널이라면 continue
+                    if tunnel[nr][nc] in x[i]:
+                        continue
+                    # 아다리가 맞는 터널이면 append + 방문표시 + cnt+=1
+                    queue.append((nr, nc))
+                    visited[nr][nc] = 1
+                    cnt += 1
+
+    print("#%d %d" % (t, cnt))
