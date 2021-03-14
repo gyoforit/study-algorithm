@@ -505,3 +505,118 @@ for t in range(1, T+1):
                     cnt += 1
 
     print("#%d %d" % (t, cnt))
+
+# 210314
+# 1949. [모의 SW 역량테스트] 등산로 조성
+drc = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+def DFS_recur(r, c, cnt, flag):
+    global mx_length
+    visited[r][c] = 1
+    # 최댓값 갱신
+    if cnt > mx_length:
+        mx_length = cnt
+
+    for dr, dc in drc:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < N and 0 <= nc < N and visited[nr][nc] == 0:
+            # 작으면 DFS 호출
+            if mountain[nr][nc] < mountain[r][c]:
+                DFS_recur(nr, nc, cnt + 1, flag)
+            # 크거나 같은데 차이가 K 미만, 아직 안 깎았으면 깎고 DFS 호출
+            elif mountain[nr][nc] - mountain[r][c] < K and flag:
+                tmp = mountain[nr][nc] - mountain[r][c] + 1
+                mountain[nr][nc] -= tmp
+                DFS_recur(nr, nc, cnt + 1, 0)
+                # 깎았던 거 원상 복귀
+                mountain[nr][nc] += tmp
+            else:
+                continue
+        else:
+            continue
+    visited[r][c] = 0
+
+
+T = int(input())
+for t in range(1, T + 1):
+    N, K = map(int, input().split())
+    mountain = []
+    peak = 0
+    mx_length = 0
+    visited = [[0] * N for _ in range(N)]
+    # 산 만들면서 최댓값 찾기
+    for r in range(N):
+        tmp = list(map(int, input().split()))
+        mountain.append(tmp)
+        if max(tmp) > peak:
+            peak = max(tmp)
+    # peak일 때 함수 실행
+    for r in range(N):
+        for c in range(N):
+            if mountain[r][c] == peak:
+                DFS_recur(r, c, 1, 1)
+    print("#%d %d" % (t, mx_length))
+
+# 4008. [모의 SW 역량테스트] 숫자 만들기
+dic = {0: (lambda a,b: a+b), 1: (lambda a,b: a-b), 2: (lambda a,b: a*b), 3: (lambda a,b: int(a/b))}
+# 재귀!!!!
+def calc(idx, result):
+    global mx, mn
+    if idx == N-1:
+        mx = max(result, mx)
+        mn = min(result, mn)
+        return
+
+    for i in range(4):
+        if opers[i] > 0:
+            opers[i] -= 1
+            n_result = dic[i](result, nums[idx+1])
+            calc(idx+1, n_result)
+            opers[i] += 1
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    opers = list(map(int, input().split()))
+    nums = list(map(int, input().split()))
+    mx = -100000000000
+    mn = 100000000000
+    calc(0, nums[0])
+
+    ans = mx-mn
+    print("#%d %d" % (t, ans))
+
+# 강의 풀이
+# 주의점: if 대신 elif를 쓰면 안됨!!
+dic = {0: (lambda a,b: a+b), 1: (lambda a,b: a-b), 2: (lambda a,b: a*b), 3: (lambda a,b: int(a/b))}
+def calc(idx, result, op1, op2, op3, op4):
+    global mx, mn
+    if idx == N-1:
+        mx = max(result, mx)
+        mn = min(result, mn)
+        return
+
+    else:
+        if op1 > 0:
+            n_result = dic[0](result, nums[idx+1])
+            calc(idx+1, n_result, op1-1, op2, op3, op4)
+        if op2 > 0:
+            n_result = dic[1](result, nums[idx + 1])
+            calc(idx + 1, n_result, op1, op2-1, op3, op4)
+        if op3 > 0:
+            n_result = dic[2](result, nums[idx + 1])
+            calc(idx + 1, n_result, op1, op2, op3-1, op4)
+        if op4 > 0:
+            n_result = dic[3](result, nums[idx + 1])
+            calc(idx + 1, n_result, op1, op2, op3, op4-1)
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    opers = list(map(int, input().split()))
+    nums = list(map(int, input().split()))
+    mx = -100000000000
+    mn = 100000000000
+    calc(0, nums[0], opers[0], opers[1], opers[2], opers[3])
+
+    ans = mx-mn
+    print("#%d %d" % (t, ans))
