@@ -1326,3 +1326,18 @@ for t in range(1, T+1):
     result = C // (min(A, B))
 
     print("#%d %d" % (t, result))
+
+# 210316
+# 모의고사 전 자존감 올리기용(?)
+# 6692. 다솔이의 월급 상자
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    result = 0
+    for _ in range(N):
+        p, x = input().split()
+        p = float(p)
+        x = int(x)
+        result += p*x
+
+    print("#%d %f" % (t, result))
