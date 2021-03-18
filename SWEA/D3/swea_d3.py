@@ -1341,3 +1341,89 @@ for t in range(1, T+1):
         result += p*x
 
     print("#%d %f" % (t, result))
+
+# 210318
+# 10804. 문자열의 거울상
+def mirror(s):
+    if s == 'q':
+        return 'p'
+    elif s == 'p':
+        return 'q'
+    elif s == 'd':
+        return 'b'
+    else:
+        return 'd'
+
+T = int(input())
+for t in range(1, T+1):
+    str = input()
+    result = ''
+    for i in range(len(str)-1, -1, -1):
+        result += mirror(str[i])
+    print("#%d %s" % (t, result))
+
+# 4676. 늘어지는 소리 만들기
+T = int(input())
+for t in range(1, T+1):
+    word = input()
+    H = int(input())
+    nums = [0]*(len(word)+1)
+    h_list = list(map(int, input().split()))
+    for i in h_list:
+        nums[i] += 1
+
+    result = ''
+    for w in range(len(word)):
+        if nums[w] != 0:
+            result += '-'*nums[w]
+        result += word[w]
+
+    result += '-'*nums[-1]
+
+    print("#%d %s" % (t, result))
+
+# 1493. 수의 새로운 연산
+# 각 대각선을 군수열로 생각 [1], [2, 3], [4, 5, 6] ...
+# n군의 1항 계산
+def find(n):
+    if n == 1:
+        return 1
+    result = 0
+    for i in range(n-1, -1, -1):
+        result += i
+    return result+1
+
+# j군에 속하는 x의 좌표를 리턴
+def location(x, j):
+    first = find(j)
+    y = x-first
+    return y+1, j-y
+
+# x, y 좌표 넣으면 해당 좌표와 매칭되는 숫자를 리턴
+def point(c, r):
+    group = find(c+r-1)
+    nc = c-1
+    return group+nc
+
+T = int(input())
+for t in range(1, T+1):
+    p, q = map(int, input().split())
+    i, j = 1, 1
+
+    # p,q가 속하는 군 구하기
+    while True:
+        if find(i) <= p < find(i+1):
+            break
+        else:
+            i += 1
+    while True:
+        if find(j) <= q < find(j+1):
+            break
+        else:
+            j += 1
+
+    p1, p2 = location(p, i)
+    q1, q2 = location(q, j)
+    r1, r2 = p1+q1, p2+q2
+    result = point(r1, r2)
+    print("#%d %d" % (t, result))
