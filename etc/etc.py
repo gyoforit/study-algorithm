@@ -326,3 +326,28 @@ maze = [list(map(int, input())) for _ in range(N)]
 visited = [[0]*M for _ in range(N)]
 result = BFS_maze(0, 0)
 print(result)
+
+# 210319
+# 이코테 유형별 기출
+# 7. 럭키 스트레이트 (백준 # 18406)
+# 더하고 뺐을 때 0인지 확인할 수도 있음!
+N = input()
+f, s = 0, 0
+for i in range(0, len(N)):
+    if i < len(N)//2:
+        f += int(N[i])
+    else:
+        s += int(N[i])
+
+result = 'LUCKY' if f == s else 'READY'
+print(result)
+
+# 구현 8. 문자열 재정렬
+S = sorted(input())
+for s in range(len(S)):
+    if ord(S[s]) > 57:
+        idx = s
+        break
+n = sum(map(int, S[:s]))
+result = ''.join(S[s:]) + str(n) if n != 0 else ''.join(S[s:])
+print(result)
