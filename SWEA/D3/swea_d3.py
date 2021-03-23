@@ -1427,3 +1427,41 @@ for t in range(1, T+1):
     r1, r2 = p1+q1, p2+q2
     result = point(r1, r2)
     print("#%d %d" % (t, result))
+
+# 210323
+# 4299. 태혁이의 사랑은 타이밍
+# 시작 시점: 11일 0시 0분
+# 기준 점: 11일 11시 11분 -> 671분째
+T = int(input())
+for t in range(1, T+1):
+    D, H, M = map(int, input().split())
+    A = ((D-11)*24*60 + H*60 + M)-671
+    result = -1 if A < 0 else A
+    print("#%d %d" % (t, result))
+
+# 5603. 건초더미
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    A = []
+    for _ in range(N):
+        A.append(int(input()))
+    avg = sum(A)//N
+    result = 0
+    for a in A:
+        if a > avg:
+            result += a-avg
+    print("#%d %d" % (t, result))
+
+# 5948. 새샘이의 7-3-5 게임
+import itertools
+T = int(input())
+for t in range(1, T+1):
+    N = list(map(int, input().split()))
+    N_combi = list((itertools.combinations(N, 3)))
+    total = set()
+    for i in range(len(N_combi)):
+        total.add(sum(N_combi[i]))
+    total = list(total)
+    total.sort(reverse=True)
+    print("#%d %d" % (t, total[4]))
