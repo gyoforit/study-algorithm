@@ -1465,3 +1465,27 @@ for t in range(1, T+1):
     total = list(total)
     total.sort(reverse=True)
     print("#%d %d" % (t, total[4]))
+
+# 210327
+# 3260. 두 수의 덧셈
+T = int(input())
+for t in range(1, T+1):
+    A, B = map(int, input().split())
+    print("#%d %d" % (t, A+B))
+
+# 10580. 전봇대
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    poles = []
+    cnt = 0
+    for _ in range(N):
+        A, B = map(int, input().split())
+        if poles:
+            for x, y in poles:
+                if (A-x)*(B-y) < 0:
+                    cnt += 1
+
+        poles.append((A, B))
+
+    print("#%d %d" % (t, cnt))

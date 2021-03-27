@@ -88,3 +88,90 @@ N = int(input())
 for i in range(1,2*N):
     x = abs(N-i)
     print((' '*(N-x-1))+('*'*(2*x+1)))
+
+# 210327
+# 11399. ATM
+# DFS재귀로 풀면 시간 초과
+def DFS(idx, S, total):
+    global mn
+    if total >= mn:
+        return
+
+    if idx == N:
+        if total < mn:
+            mn = total
+            return
+
+    for i in range(N):
+        if check[i] == 0:
+            NS = S+pp[i]
+            Ntotal = total+NS
+            check[i] = 1
+            DFS(idx+1, NS, Ntotal)
+            check[i] = 0
+
+N = int(input())
+pp = list(map(int, input().split()))
+check = [0]*N
+mn = 987654321
+DFS(0, 0, 0)
+print(mn)
+
+# 그리디로 풀면 통과!
+N = int(input())
+pp = list(map(int, input().split()))
+pp.sort()
+total = 0
+for i in range(N):
+    tmp = sum(pp[:i+1])
+    total += tmp
+print(total)
+
+# 16953: A -> B
+def calc(A, B):
+    X = B
+    cnt = 0
+    while A != X:
+        if X < A:
+            return -1
+        if X % 2:
+            NX = str(X)
+            if NX[-1] == '1':
+                X = int(NX[:-1])
+            else:
+                return -1
+        else:
+            X //= 2
+        cnt += 1
+        # print(A, X)
+    return cnt+1
+
+A, B = map(int, input().split())
+print(calc(A, B))
+
+# 12907. 동물원
+def zoo(N, data):
+    if max(data) >= N:
+        return 0
+    else:
+        X = max(data) + 1
+        Y = N-X
+        for i in range(0, X):
+            if Y != 0:
+                if i <= Y - 1:
+                    if data.count(i) != 2:
+                        return 0
+                else:
+                    if data.count(i) != 1:
+                        return 0
+            else:
+                if data.count(i) != 1:
+                    return 0
+        if X != Y:
+            return (2**Y)*2
+        else:
+            return 2**Y
+
+N = int(input())
+data = list(map(int, input().split()))
+print(zoo(N, data))
