@@ -175,3 +175,16 @@ def zoo(N, data):
 N = int(input())
 data = list(map(int, input().split()))
 print(zoo(N, data))
+
+# 210328
+# 12871. 무한 문자열
+s = input()
+t = input()
+if len(s) > len(t):
+    s, t = t, s
+ls = len(s)
+lt = len(t)
+ns = s * (100//ls) + s[:100%ls]
+nt = t * (100//lt) + t[:100%lt]
+result = 1 if ns == nt else 0
+print(result)
