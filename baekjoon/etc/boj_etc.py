@@ -188,3 +188,17 @@ ns = s * (100//ls) + s[:100%ls]
 nt = t * (100//lt) + t[:100%lt]
 result = 1 if ns == nt else 0
 print(result)
+
+# 12904. A와 B
+def check(A, B):
+    NB = B
+    while len(A) != len(NB):
+        if NB[-1] == 'A':
+            NB = NB[:-1]
+        else:
+            NB = NB[:-1][-1::-1]
+    return 1 if A == NB else 0
+
+S = input()
+T = input()
+print(check(S, T))
