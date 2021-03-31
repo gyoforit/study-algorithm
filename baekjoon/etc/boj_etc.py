@@ -202,3 +202,25 @@ def check(A, B):
 S = input()
 T = input()
 print(check(S, T))
+
+# 210331
+# 16922. 로마 숫자 만들기
+rome = [1, 5, 10, 50]
+def DFS(idx, S, T):
+    global result
+    if idx == 4:
+        if T == 0:
+            if S not in result:
+                result.add(S)
+
+        return
+
+    for i in range(0, T+1):
+        NS = S+rome[idx]*i
+        NT = T-i
+        DFS(idx+1, NS, NT)
+
+N = int(input())
+result = set()
+DFS(0, 0, N)
+print(len(result))
