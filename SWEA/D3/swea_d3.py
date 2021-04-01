@@ -1489,3 +1489,46 @@ for t in range(1, T+1):
         poles.append((A, B))
 
     print("#%d %d" % (t, cnt))
+
+# 210401
+# 2817. 부분 수열의 합
+def DFS(idx, start, S):
+    global cnt
+    if idx < N:
+        if S == K:
+            cnt += 1
+            return
+        elif S > K:
+            return
+    elif idx == N:
+        if S == K:
+            cnt += 1
+            return
+    for i in range(start, N):
+        NS = S+A[i]
+        DFS(idx+1, i+1, NS)
+
+T = int(input())
+for t in range(1, T+1):
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))
+    cnt = 0
+    DFS(0, 0, 0)
+    print("#%d %d" % (t, cnt))
+
+# 3233. 정삼각형 분할 놀이
+T = int(input())
+for t in range(1, T+1):
+    A, B = map(int, input().split())
+    X = A//B
+    result = 1 if X == 1 else sum([i*2 for i in range(1, X)])+X
+    print("#%d %d" % (t, result))
+
+# 3376. 파도반 수열
+wave = [0] * 101
+for i in range(len(wave)):
+    wave[i] = 1 if i <= 3 else wave[i-3] + wave[i-2]
+
+T = int(input())
+for t in range(1, T+1):
+    print("#%d %d" % (t, wave[int(input())]))
