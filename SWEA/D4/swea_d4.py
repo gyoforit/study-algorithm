@@ -620,3 +620,71 @@ for t in range(1, T+1):
 
     ans = mx-mn
     print("#%d %d" % (t, ans))
+
+# 210405
+# 1231. [S/W 문제해결 기본] 9일차 - 중위순회
+def inorder(N):
+    if tree[N]:
+        inorder(tree[N][0])
+    visit.append(N)
+    if len(tree[N]) >= 2:
+        inorder(tree[N][1])
+    return
+
+for t in range(1, 11):
+    N = int(input())
+    words = [0]
+    tree = [[] for _ in range(N+1)]
+    for _ in range(N):
+        tmp = input().split()
+        words.append(tmp[1])
+        if len(tmp) >= 3:
+            tree[int(tmp[0])].append(int(tmp[2]))
+        if len(tmp) >= 4:
+            tree[int(tmp[0])].append(int(tmp[3]))
+    visit = []
+    result = ''
+    inorder(1)
+    for v in visit:
+        result += words[v]
+
+    print("#%d %s" % (t, result))
+
+# 11746. 이진탐색트리 - 생성
+# 트리 생성
+def making(n, target):
+    # 자식 없으면
+    if not tree.get(target):
+        tree[target] = [n] if n < target else [0, n]
+    # 자식이 한개면
+    elif len(tree.get(target)) == 1:
+        if n < target:
+            making(n, tree.get(target)[0])
+        else:
+            tree[target].append(n)
+    # 자식이 두개면
+    else:
+        if n < target:
+            making(n, tree.get(target)[0])
+        else:
+            making(n, tree.get(target)[1])
+
+# 전위운행
+def preorder(n):
+    visit.append(n)
+    child = tree.get(n)
+    if child:
+        if child[0]:
+            preorder(child[0])
+        if child[1]:
+            preorder(child[1])
+
+N = int(input())
+nums = list(map(int, input().split()))
+root = nums[0]
+tree = dict()
+visit = []
+for i in range(1, len(nums)):
+    making(nums[i], root)
+preorder(root)
+print('-'.join(map(str, visit)))

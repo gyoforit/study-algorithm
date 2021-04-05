@@ -1532,3 +1532,49 @@ for i in range(len(wave)):
 T = int(input())
 for t in range(1, T+1):
     print("#%d %d" % (t, wave[int(input())]))
+
+# 210405
+# 11742. 트리의 전위순회
+# 1) 배열 두개 만들어서
+def tree(N):
+    visit.append(N)
+    if left[N] != 0:
+        tree(left[N])
+    if right[N] != 0:
+        tree(right[N])
+    return
+
+N = int(input())
+left = [0]*(N+1)
+right = [0]*(N+1)
+nums = list(map(int, input().split()))
+start = min(nums)
+for i in range(0, len(nums), 2):
+    if left[nums[i]] != 0:
+        right[nums[i]] = nums[i+1]
+    else:
+        left[nums[i]] = nums[i+1]
+visit = []
+
+tree(start)
+result = '-'.join(map(str, visit))
+print(result)
+
+# 2) 이중리스트
+def search(N):
+    visit.append(N)
+    if len(tree[N]) >= 1:
+        search(tree[N][0])
+    if len(tree[N]) >= 2:
+        search(tree[N][1])
+    return
+
+N = int(input())
+nums = list(map(int, input().split()))
+tree = [[] for _ in range(N+1)]
+for i in range(0, len(nums), 2):
+    tree[nums[i]].append(nums[i+1])
+visit = []
+start = min(nums)
+search(start)
+print('-'.join(map(str, visit)))
