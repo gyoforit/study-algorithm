@@ -688,3 +688,33 @@ for i in range(1, len(nums)):
     making(nums[i], root)
 preorder(root)
 print('-'.join(map(str, visit)))
+
+# 210406
+# 1232. [S/W 문제해결 기본] 9일차 - 사칙연산
+calc = {'+': lambda a, b: a+b, '-': lambda a, b: a-b, '*': lambda a, b: a*b, '/': lambda a, b: a/b }
+
+def postorder(n):
+    for c in tree[n][1:]:
+        if c:
+            postorder(int(c))
+    x = tree[n][0]
+    if x in ('+', '-', '*', '/'):
+        B = num.pop()
+        A = num.pop()
+        num.append(calc.get(x)(A, B))
+    else:
+        num.append(float(x))
+
+T = 10
+for t in range(1, T+1):
+    N = int(input())
+    tree = [[0, 0, 0] for _ in range(N+1)]
+    num = []
+    for _ in range(N):
+        tmp = input().split()
+        node = int(tmp[0])
+        tree[node][0] = tmp[1]
+        if len(tmp) >= 4:
+            tree[node][1], tree[node][2] = tmp[2], tmp[3]
+    postorder(1)
+    print("#%d %d" % (t, int(num[0])))

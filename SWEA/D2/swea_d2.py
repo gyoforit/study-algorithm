@@ -1165,3 +1165,95 @@ for t in range(1, T+1):
     S, E = map(int, input().split())
 
     print("#%d %s" % (t, BFS(S, E)))
+
+# 210406
+# 11748. 파이썬 SW문제해결 기본 - Tree 8일차 subtree
+# child가 없으면 알아서 for문 안 도니까 이렇게 바꿔도 된다!
+def subtree(n):
+    global cnt
+    cnt += 1
+    for c in tree[n]:
+        subtree(c)
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    E, N = map(int, input().split())
+    nums = list(map(int, input().split()))
+    tree = [[] for _ in range(E+2)]
+    for i in range(E):
+        tree[nums[2*i]].append(nums[2*i+1])
+    cnt = 0
+    subtree(N)
+    print("#%d %d" % (t, cnt))
+
+# 11749. 파이썬 SW문제해결 기본 - Tree 8일차 - 이진탐색
+def insert(n):
+    global i
+    if n <= N:
+        insert(2*n)
+        tree[n] = i
+        i += 1
+        insert(2*n+1)
+    return
+
+for t in range(1, int(input())+1):
+    N = int(input())
+    tree = [0]*(N+1)
+    i = 1
+    insert(i)
+    print("#%d %d %d" % (t, tree[1], tree[N//2]))
+
+# 11758. [파이썬 S/W 문제해결 기본] 8일차 - 이진 힙
+def insert(x, i):
+    p_idx = i//2
+    p = tree[p_idx]
+    # 부모에 x 등록
+    if p[0]:
+        idx = 2 if p[1] else 1
+        p[idx] = i
+        if p[0] > x:
+            while p[0] > x:
+                tmp = p[0]
+                p[0] = x
+                tree[i][0] = tmp
+                p_idx = p_idx//2
+            return
+    tree[i][0] = x
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    tree = [[0, 0, 0] for _ in range(N+1)]
+    nums = list(map(int, input().split()))
+    for n in range(N):
+        insert(nums[n], n+1)
+
+    result = 0
+    parent = N//2
+    while parent != 0:
+        result += tree[parent][0]
+        parent //= 2
+    print("#%d %d" % (t, result))
+
+# 11759. [파이썬 S/W 문제해결 기본] 8일차 - 노드의 합
+def save(n):
+    if 2*n <= N and tree[2*n] == 0:
+        save(2*n)
+    if 2*n+1 <= N and tree[2*n+1] == 0:
+        save(2*n+1)
+    l = 0 if 2*n > N else tree[2*n]
+    r = 0 if 2*n+1 > N else tree[2*n+1]
+    tree[n] = l+r
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    N, M, L = map(int, input().split())
+    tree = [0]*(N+1)
+    for _ in range(M):
+        a, b = map(int, input().split())
+        tree[a] = b
+    save(1)
+    print("#%d %d" % (t, tree[L]))

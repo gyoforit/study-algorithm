@@ -1578,3 +1578,22 @@ visit = []
 start = min(nums)
 search(start)
 print('-'.join(map(str, visit)))
+
+# 210406
+# 4789. 성공적인 공연 기획
+T = int(input())
+for t in range(1, T+1):
+    clap = []
+    clap.extend(input())
+    clap = list(map(int, clap))
+    now = clap[0]
+    result = 0
+    for c in range(1, len(clap)):
+        if now < c and clap[c] != 0:
+            tmp = c-now
+            result += tmp
+            now += tmp+clap[c]
+        elif now >= c:
+            now += clap[c]
+    print("#%d %d" % (t, result))
+
