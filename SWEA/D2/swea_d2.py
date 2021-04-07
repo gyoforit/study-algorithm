@@ -1257,3 +1257,38 @@ for t in range(1, T+1):
         tree[a] = b
     save(1)
     print("#%d %d" % (t, tree[L]))
+
+# 210407
+# 1966. 숫자를 정렬하자 (머지소트)
+def merge_sort(a):
+    if len(a) == 1:
+        return a
+    mid = len(a) // 2
+    # print(mid, a)
+    arr = merge_sort(a[:mid]) # arr, brr은 정렬된 두 개의 배열
+    brr = merge_sort(a[mid:])
+    # print(arr, brr)
+    # arr, brr을 합쳐서 하나의 정렬된 배열을 만듦
+    temp = []
+    ai, bi = 0, 0
+    while ai < len(arr) and bi < len(brr):
+        if arr[ai] < brr[bi]:
+            temp.append(arr[ai])
+            ai += 1
+        else:
+            temp.append(brr[bi])
+            bi += 1
+    temp += arr[ai:]
+    temp += brr[bi:]
+    # print(temp)
+    return temp
+
+# a = [5, 1, 9, 6, 8, 4, 2, 3]
+# merge_sort(a)
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    nums = list(map(int, input().split()))
+    result = merge_sort(nums)
+    print("#%d %s" % (t, ' '.join(map(str, result))))
