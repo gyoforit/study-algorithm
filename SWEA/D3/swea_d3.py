@@ -1597,3 +1597,36 @@ for t in range(1, T+1):
             now += clap[c]
     print("#%d %d" % (t, result))
 
+# 210408
+# 10726. 이진수 표현
+def binary(n):
+    result = ''
+    while n != 0:
+        result = str(n%2) + result
+        n //= 2
+    return result
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    bnum = binary(M)
+    if N > len(bnum):
+        ans = 'OFF'
+    else:
+        ans = 'ON' if bnum[len(bnum)-N:].count('1') == N else 'OFF'
+    print("#%d %s" % (t, ans))
+
+# 4522. 세상의 모든 팰린드롬
+def ispalin(s):
+    for i in range(len(s)//2):
+        if (s[i] == s[len(s)-1-i]) or s[i] == '?' or s[len(s)-1-i] == '?':
+            continue
+        else:
+            return 'Not exist'
+    return 'Exist'
+
+T = int(input())
+for t in range(1, T+1):
+    S = input()
+    print("#%d %s" % (t, ispalin(S)))
+
