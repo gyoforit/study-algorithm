@@ -1630,3 +1630,36 @@ for t in range(1, T+1):
     S = input()
     print("#%d %s" % (t, ispalin(S)))
 
+# 210409
+# 5986. 새샘이와 세 소수
+# n 이하의 소수 구하는 함수
+def prime_list(n):
+    nums = [True]*n
+    m = int(n**0.5)
+    for i in range(2, m+1):
+        if nums[i]:
+            for j in range(i+i, n, i):
+                nums[j] = False
+    return [i for i in range(2, n) if nums[i] == True]
+
+def comb(idx, start, S):
+    global cnt
+    if S > N:
+        return
+    if idx == 3:
+        if S == N:
+            cnt += 1
+        return
+
+    for i in range(start, len(plist)):
+        p = plist[i]
+        comb(idx+1, i, S+p)
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    cnt = 0
+    plist = prime_list(N)
+    comb(0, 0, 0)
+    print("#%d %d" % (t, cnt))
+

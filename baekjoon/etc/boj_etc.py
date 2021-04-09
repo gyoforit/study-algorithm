@@ -224,3 +224,23 @@ N = int(input())
 result = set()
 DFS(0, 0, N)
 print(len(result))
+
+# 210409
+# 백준 2178. 미로 탐색 -> BFS!
+drc = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+def BFS(N, M):
+    queue = [(0, 0)]
+    while queue:
+        tr, tc = queue.pop(0)
+        if tr == N-1 and tc == M-1:
+            return maze[tr][tc]
+
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0 <= nr < N and 0 <= nc < M and (nr, nc) != (0, 0) and maze[nr][nc] == 1:
+                queue.append((nr, nc))
+                maze[nr][nc] = maze[tr][tc] + 1
+
+N, M = map(int, input().split())
+maze = [list(map(int, input())) for _ in range(N)]
+print(BFS(N, M))
