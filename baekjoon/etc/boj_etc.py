@@ -226,7 +226,7 @@ DFS(0, 0, N)
 print(len(result))
 
 # 210409
-# 백준 2178. 미로 탐색 -> BFS!
+# 2178. 미로 탐색 -> BFS!
 drc = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 def BFS(N, M):
     queue = [(0, 0)]
@@ -244,3 +244,42 @@ def BFS(N, M):
 N, M = map(int, input().split())
 maze = [list(map(int, input())) for _ in range(N)]
 print(BFS(N, M))
+
+# 210411
+# 1991. 트리 순회
+# 트리 노드이름이 숫자가 아닌 문자로 주어지므로 ASCII code를 활용함
+def preorder(N):
+    if N != '.':
+        v.append(N)
+        n = ord(N)-65
+        preorder(tree[n][0])
+        preorder(tree[n][1])
+
+def inorder(N):
+    if N != '.':
+        n = ord(N)-65
+        inorder(tree[n][0])
+        v.append(N)
+        inorder(tree[n][1])
+
+def postorder(N):
+    if N != '.':
+        n = ord(N)-65
+        postorder(tree[n][0])
+        postorder(tree[n][1])
+        v.append(N)
+
+N = int(input())
+tree = [[] for _ in range(N)]
+for _ in range(N):
+    tmp = input().split()
+    tree[ord(tmp[0])-65].extend(tmp[1:])
+v = []
+preorder('A')
+print(''.join(v))
+v.clear()
+inorder('A')
+print(''.join(v))
+v.clear()
+postorder('A')
+print(''.join(v))
