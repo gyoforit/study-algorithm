@@ -1663,3 +1663,32 @@ for t in range(1, T+1):
     comb(0, 0, 0)
     print("#%d %d" % (t, cnt))
 
+# 210412
+# 1240. [S/W 문제해결 응용] 1일차 - 단순 2진 암호코드
+code = {'0001101': 0, '0011001': 1, '0010011': 2, '0111101': 3, '0100011': 4,
+        '0110001': 5, '0101111': 6, '0111011': 7, '0110111': 8, '0001011': 9}
+
+def check(arr):
+    result = 0
+    for i in range(0, len(arr), 2):
+            result += arr[i]*3
+            result += arr[i+1]
+    if result % 10:
+        return 0
+    else:
+        return sum(arr)
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    data = ''
+    result = []
+    for _ in range(N):
+        data += input()
+    # 암호의 공통점이 1로 끝난다는 것이므로 오른쪽의 0을 모두 없애버리기
+    data = data.rstrip('0')
+    L = len(data)
+    pw = data[L-56:L]
+    for i in range(0, len(pw), 7):
+        result.append(code.get(pw[i:i+7]))
+    print("#%d %d" % (t, check(result)))
