@@ -1692,3 +1692,13 @@ for t in range(1, T+1):
     for i in range(0, len(pw), 7):
         result.append(code.get(pw[i:i+7]))
     print("#%d %d" % (t, check(result)))
+
+# 210413
+# 10726. 이진수 표현
+# 비트 마스킹 활용
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    masking = (1<<N)-1
+    result = 'ON' if (M & masking) == masking else 'OFF'
+    print("#%d %s" % (t, result))

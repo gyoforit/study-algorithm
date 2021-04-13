@@ -1292,3 +1292,30 @@ for t in range(1, T+1):
     nums = list(map(int, input().split()))
     result = merge_sort(nums)
     print("#%d %s" % (t, ' '.join(map(str, result))))
+
+# 11792. [파이썬 S/W 문제해결 구현] 1일차 - 이진수
+T = int(input())
+for t in range(1, T+1):
+    N, num = input().split()
+    result = ''
+    for n in range(int(N)):
+        result += str(bin(int(num[n], 16))[2:]).zfill(4)
+    print("#%d %s" % (t, result))
+
+# 11794. [파이썬 S/W 문제해결 구현] 1일차 - 이진수2
+T = int(input())
+for t in range(1, T+1):
+    N = float(input())
+    result = ''
+    for i in range(1, 13):
+        dvd = 1/(1<<i)
+        if N == 0:
+            break
+        if N >= dvd:
+            result += '1'
+            N -= dvd
+        else:
+            result += '0'
+    else:
+        result = 'overflow'
+    print("#%d %s" % (t, result))
