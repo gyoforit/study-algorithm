@@ -1702,3 +1702,50 @@ for t in range(1, T+1):
     masking = (1<<N)-1
     result = 'ON' if (M & masking) == masking else 'OFF'
     print("#%d %s" % (t, result))
+
+# 210414
+# 1244. [S/W 문제해결 응용] 2일차 - 최대 상금
+def compare(s, lv):
+    global mx, check
+    if lv == M:
+        num = int(''.join(N))
+        if mx < num:
+            mx = num
+        return
+
+    # 숫자가 내림차순이 되어버리면 더이상 비교가 안 되므로 이제까지 비교한 횟수를 check에 할당
+    if sorted(N, reverse=True) == N:
+        check = lv
+
+    for i in range(s, L):
+        for j in range(i+1, L):
+            if N[i] <= N[j]:
+                N[i], N[j] = N[j], N[i]
+                compare(i, lv+1)
+                N[i], N[j] = N[j], N[i]
+
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = input().split()
+    N, M = list(N), int(M)
+    L = len(N)
+    mx = 0
+    check = 0
+    compare(0, 0)
+
+    # (1) M번의 교환이 끝났다는 뜻이므로 pass
+    if mx != 0:
+        pass
+    # (2) 중간에 내림차순이 되어버렸다는 뜻이므로 아직 비교못한 만큼 일의자리-십의자리 교환
+    elif check != 0:
+        N = sorted(N, reverse=True)
+        for _ in range(M-check):
+            N[-2], N[-1] = N[-1], N[-2]
+        mx = int(''.join(N))
+    # (3) check도 mx도 0이면 처음부터 내림차순이었다는 뜻
+    elif mx == 0:
+        for _ in range(M):
+            N[-2], N[-1] = N[-1], N[-2]
+        mx = int(''.join(N))
+    print("#%d %d" % (t, mx))
