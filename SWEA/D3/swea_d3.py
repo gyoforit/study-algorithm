@@ -1865,3 +1865,27 @@ for t in range(1, T+1):
             result = 2
             break
     print("#%d %d" % (t, result))
+
+# 2819. 격자판의 숫자 이어 붙이기
+drc = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+def DFS(lv, r, c):
+    if lv == 7:
+        nums.add(''.join(s))
+        return
+    for dr, dc in drc:
+        nr, nc = r+dr, c+dc
+        if 0 <= nr < 4 and 0 <= nc < 4:
+            s.append(grid[nr][nc])
+            DFS(lv+1, nr, nc)
+            s.pop()
+
+T = int(input())
+for t in range(1, T+1):
+    grid = [input().split() for _ in range(4)]
+    s = []
+    nums = set()
+    for i in range(4):
+        for j in range(4):
+            DFS(0, i, j)
+
+    print("#%d %d" % (t, len(nums)))
