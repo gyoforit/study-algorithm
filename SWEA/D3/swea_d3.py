@@ -1749,3 +1749,119 @@ for t in range(1, T+1):
             N[-2], N[-1] = N[-1], N[-2]
         mx = int(''.join(N))
     print("#%d %d" % (t, mx))
+
+# 210415
+# 11847. [파이썬 S/W 문제해결 구현] 2일차 - 최소합
+drc = [(1, 0), (0, 1)]
+def DFS(r, c, S):
+    global mn
+    if S >= mn:
+        return
+    if r == N-1 and c == N-1:
+        if S < mn:
+            mn = S
+        return
+
+    for dr, dc in drc:
+        nr, nc = r+dr, c+dc
+        if 0<=nr<N and 0<=nc<N:
+            DFS(nr, nc, S+grid[nr][nc])
+
+# 11848. [파이썬 S/W 문제해결 구현] 2일차 - 전자카트
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    grid = [list(map(int, input().split())) for _ in range(N)]
+    mn = 987654321
+    DFS(0, 0, grid[0][0])
+    print("#%d %d" % (t, mn))
+
+def DFS(lv, c, S):
+    global mn
+    if S >= mn:
+        return
+
+    if lv == N-1:
+        mn = min(mn, S+battery[c][0])
+        return
+
+    for i in range(1, N):
+        if not check[i]:
+            check[i] = 1
+            DFS(lv+1, i, S+battery[c][i])
+            check[i] = 0
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    battery = [list(map(int, input().split())) for _ in range(N)]
+    check = [1]+[0]*(N-1)
+    mn = 987654321
+    DFS(0, 0, 0)
+    print("#%d %d" % (t, mn))
+
+# 11850. [파이썬 S/W 문제해결 구현] 3일차 - 컨테이너 운반
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    box = sorted(list(map(int, input().split())), reverse=True)
+    truck = sorted(list(map(int, input().split())), reverse=True)
+    cnt = 0
+    for i in range(N):
+        for j in range(len(truck)):
+            if box[i] <= truck[j]:
+                cnt += box[i]
+                truck.pop(j)
+                break
+
+    print("#%d %d" % (t, cnt))
+
+# 11854. [파이썬 S/W 문제해결 구현] 3일차 - 화물 도크
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    truck = [tuple(map(int, input().split())) for _ in range(N)]
+    truck.sort(key=lambda x: x[1])
+    now = truck[0][1]
+    cnt = 1
+    for i in range(1, N):
+        if truck[i][0] >= now:
+            cnt += 1
+            now = truck[i][1]
+
+    print("#%d %d" % (t, cnt))
+
+# 11855. [파이썬 S/W 문제해결 구현] 3일차 - 베이비진 게임
+def is_run(arr):
+    for i in arr:
+        if i >= 3:
+            return True
+    return False
+
+def is_triple(arr):
+    for i in range(0, len(arr)-2):
+        if arr[i] and arr[i+1] and arr[i+2]:
+            return True
+    return False
+
+T = int(input())
+for t in range(1, T+1):
+    nums = list(map(int, input().split()))
+    f, s = nums[0::2], nums[1::2]
+    cnt1, cnt2 = [0]*10, [0]*10
+    for i in range(3):
+        cnt1[f[i]] += 1
+        cnt2[s[i]] += 1
+    result = 0
+    idx = 2
+    while idx < 5:
+        idx += 1
+        cnt1[f[idx]] += 1
+        cnt2[s[idx]] += 1
+        if is_run(cnt1)+is_triple(cnt1) >= 1:
+            result = 1
+            break
+        if is_run(cnt2)+is_triple(cnt2) >= 1:
+            result = 2
+            break
+    print("#%d %d" % (t, result))
