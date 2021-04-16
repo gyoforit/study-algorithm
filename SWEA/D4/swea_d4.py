@@ -718,3 +718,86 @@ for t in range(1, T+1):
             tree[node][1], tree[node][2] = tmp[2], tmp[3]
     postorder(1)
     print("#%d %d" % (t, int(num[0])))
+
+# 210416
+# 1486. 장훈이의 높은 선반
+def pick(lv, S):
+    global mn
+    if lv == N:
+        if S >= B:
+            mn = min(mn, S)
+        return
+
+    if S >= mn or S+expect[lv] < B:
+        return
+
+    pick(lv+1, S+people[lv])
+    pick(lv+1, S)
+
+T = int(input())
+for t in range(1, T+1):
+    N, B = map(int, input().split())
+    people = list(map(int, input().split()))
+    expect = people.copy()
+    for i in range(N-2, -1, -1):
+        expect[i] += expect[i+1]
+    mn = 987654321
+    pick(0, 0)
+    print("#%d %d" % (t, mn-B))
+
+# 1861. 정사각형 방
+drc = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+def check(r, c):
+    for dr, dc in drc:
+        nr, nc = r+dr, c+dc
+        if 0<=nr<N and 0<=nc<N:
+            if grid[nr][nc] == grid[r][c] + 1:
+                cnt[grid[r][c]] = 1
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    grid = [list(map(int, input().split())) for _ in range(N)]
+    cnt = [0]*((N**2)+1)
+    for r in range(N):
+        for c in range(N):
+            check(r, c)
+
+    for i in range((N**2)-2, -1, -1):
+        if cnt[i] != 0:
+            cnt[i] += cnt[i+1]
+    mx = max(cnt)
+    print("#%d %d %d" % (t, cnt.index(mx), mx+1))
+
+# 4366. 정식이의 은행 업무
+def change_bin(n):
+    b = int(n, 2)
+    for i in range(len(n)):
+        tmp = b^(1<<i)
+        numlist.add(tmp)
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    bnum = input()
+    tnum = list(input())
+    backup = tnum.copy()
+    numlist = set()
+    change_bin(bnum)
+    result = 0
+    flag = 0
+    for i in range(len(tnum)):
+        if flag:
+            break
+        for j in range(3):
+            if int(tnum[i]) != j:
+                tnum[i] = str(j)
+                tmp = int(''.join(tnum), 3)
+                if tmp in numlist:
+                    result = tmp
+                    flag = 1
+                    break
+        tnum[i] = backup[i]
+
+    print("#%d %d" % (t, result))
