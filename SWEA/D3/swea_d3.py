@@ -1889,3 +1889,52 @@ for t in range(1, T+1):
             DFS(0, i, j)
 
     print("#%d %d" % (t, len(nums)))
+
+# 210419
+# 11909. 연습문제 3 - 트리 순회
+def order(n):
+    if n:
+        preorder.append(n)
+        order(tree[n][0])
+        inorder.append(n)
+        order(tree[n][1])
+        postorder.append(n)
+
+T = int(input())
+for t in range(1, T+1):
+    V = int(input())
+    tree = [[0, 0] for _ in range(V+1)]
+    data = list(map(int, input().split()))
+    for i in range(0, len(data), 2):
+        if tree[data[i]][0]:
+            tree[data[i]][1] = data[i+1]
+        else:
+            tree[data[i]][0] = data[i+1]
+    preorder = []
+    inorder = []
+    postorder = []
+    order(1)
+    print("#%d" % t, '-'.join(map(str, preorder)), '-'.join(map(str, inorder)), '-'.join(map(str, postorder)), sep='\n')
+
+# 11906. [파이썬 S/W 문제해결 구현] 4일차 - 퀵 정렬
+def quicksort(l, r):
+    if l >= r:
+        return
+    pivot = r
+    i, j = l, l
+    while j < pivot:
+        if nums[j] < nums[pivot]:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+        j += 1
+    nums[i], nums[pivot] = nums[pivot], nums[i]
+
+    quicksort(l, i-1)
+    quicksort(i+1, r)
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    nums = list(map(int, input().split()))
+    quicksort(0, N-1)
+    print("#%d %d" % (t, nums[N//2]))
