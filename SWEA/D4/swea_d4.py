@@ -801,3 +801,28 @@ for t in range(1, T+1):
         tnum[i] = backup[i]
 
     print("#%d %d" % (t, result))
+
+# 210420
+# 1865. 동철이의 일 분배
+def roles(n, total):
+    global mx
+    if n == N:
+        if total > mx:
+            mx = total
+        return
+    if total <= mx:
+        return
+    for i in range(N):
+        if not check[i]:
+            check[i] = 1
+            roles(n+1, total*(worker[n][i]/100))
+            check[i] = 0
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    worker = [list(map(int, input().split())) for _ in range(N)]
+    check = [0]*N
+    mx = 0
+    roles(0, 1)
+    print("#%d %.6f" % (t, mx*100))

@@ -1938,3 +1938,158 @@ for t in range(1, T+1):
     nums = list(map(int, input().split()))
     quicksort(0, N-1)
     print("#%d %d" % (t, nums[N//2]))
+
+# 210420
+# 11907. [파이썬 S/W 문제해결 구현] 4일차 - 이진 탐색
+def binarysearch(n):
+    global cnt
+    l, r = 0, N-1
+    flag = 0
+    while l <= r:
+        mid = (l+r)//2
+        if A[mid] == n:
+            cnt += 1
+            return
+        elif A[mid] < n:
+            if flag == 1:
+                return
+            flag = 1
+            l = mid+1
+        else:
+            if flag == -1:
+                return
+            flag = -1
+            r = mid-1
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    A = sorted(list(map(int, input().split())))
+    B = list(map(int, input().split()))
+    cnt = 0
+    for b in B:
+        binarysearch(b)
+    print("#%d %d" % (t, cnt))
+
+# 11923. [파이썬 S/W 문제해결 구현] 5일차 - 전기버스2
+def ride(n, cnt, remain):
+    global min_charge
+    if cnt > min_charge:
+        return
+    if n >= N-1:
+        if cnt < min_charge:
+            min_charge = cnt
+        return
+    if remain >= busstop[n]:
+        return
+    for i in range(busstop[n], 0, -1):
+        ride(n+i, cnt+1, busstop[n]-i)
+
+T = int(input())
+for t in range(1, T+1):
+    data = list(map(int, input().split()))
+    N, busstop = data[0], data[1:]
+    min_charge = 987654321
+    ride(0, -1, 0)
+    print("#%d %d" % (t, min_charge))
+
+# 11924. [파이썬 S/W 문제해결 구현] 5일차 - 최소 생산 비용
+def pick(lv, S):
+    global mn
+    if S > mn:
+        return
+    if lv == N:
+        if S < mn:
+            mn = S
+        return
+    for i in range(N):
+        if check[i] == 0:
+            check[i] = 1
+            pick(lv + 1, S + items[i][lv])
+            check[i] = 0
+
+T = int(input())
+for t in range(1, T + 1):
+    N = int(input())
+    items = [list(map(int, input().split())) for _ in range(N)]
+    mn = 987654321
+    check = [0] * N
+    pick(0, 0)
+    print("#%d %d" % (t, mn))
+
+# 4698. 테네스의 특별한 소수
+n = 1000000
+check = [True]*n
+m = int(n**0.5)
+for i in range(2, m+1):
+    if check[i] == True:
+        for j in range(i+i, n, i):
+            check[j] = False
+primelist = [i for i in range(2, n) if check[i] == True]
+
+T = int(input())
+for t in range(1, T+1):
+    D, A, B = map(int, input().split())
+    cnt = 0
+    for p in primelist:
+        if A <= p and p <= B:
+            if str(D) in str(p):
+                cnt += 1
+    print("#%d %d" % (t, cnt))
+
+# 3975. 승률 비교하기
+T = int(input())
+result = []
+for t in range(1, T+1):
+    A, B, C, D = map(int, input().split())
+    alice, bob = A/B, C/D
+    if alice > bob:
+        result.append('ALICE')
+    elif alice < bob:
+        result.append('BOB')
+    else:
+        result.append('DRAW')
+
+for a, b in enumerate(result, start=1):
+    print("#%d %s" % (a, b))
+
+# 1491. 원재의 벽 꾸미기
+T = int(input())
+for t in range(1, T+1):
+    N, A, B = map(int, input().split())
+    mn = 987654321
+    for i in range(1, N+1):
+        j = 1
+        while i*j <= N:
+            mn = min(mn, A*abs(i-j)+B*(N-i*j))
+            j += 1
+    print("#%d %d" % (t, mn))
+
+# 7675. 통역사 성경이
+def isname(S):
+    for i in range(len(S)):
+        if i == 0:
+            if ord(S[i]) < 65 or ord(S[i]) > 90:
+                return False
+        else:
+            if ord(S[i]) < 97 or ord(S[i]) > 122:
+                return False
+    return True
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    said = input().split()
+    result = []
+    cnt = 0
+    for w in said:
+        if w[-1] in '.!?':
+            if isname(w[:-1]):
+                cnt += 1
+            result.append(str(cnt))
+            cnt = 0
+        else:
+            if isname(w):
+                cnt += 1
+    print("#%d %s" % (t, ' '.join(result)))
