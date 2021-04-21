@@ -2123,3 +2123,34 @@ for t in range(1, T+1):
             D[e] = min(D[e], D[w_idx]+p)
 
     print("#%d %s" % (t, ' '.join(map(str, D))))
+
+# 2814. 최장 경로
+'''
+핵심: 다음 운행 때도 다시 방문할 수 있게 하기 위해서
+방문하지 않은 인접 노드들 다 방문 시킨 다음에
+visited 배열에서 방문 표시 제거하기
+'''
+def DFS(n, cnt):
+    global mx
+    visited[n] = 1
+    for i in AL[n]:
+        if not visited[i]:
+            DFS(i, cnt+1)
+    visited[n] = 0
+    if cnt > mx:
+        mx = cnt
+    return
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    AL = [[] for _ in range(N+1)]
+    for _ in range(M):
+        x, y = map(int, input().split())
+        AL[x].append(y)
+        AL[y].append(x)
+    visited = [0]*(N+1)
+    mx = 0
+    for i in range(1, N+1):
+        DFS(i, 1)
+    print("#%d %d" % (t, mx))
