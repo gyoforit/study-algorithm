@@ -2093,3 +2093,33 @@ for t in range(1, T+1):
             if isname(w):
                 cnt += 1
     print("#%d %s" % (t, ' '.join(result)))
+
+# 210421
+# 11942. 그래프에 Dijkstra 적용
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AL = [[] for _ in range(V)]
+    for _ in range(E):
+        s, e, p = input().split()
+        AL[ord(s)-97].append((ord(e)-97, int(p)))
+    # 시작정점 거리, 방문 표시
+    D = [0]+[999]*(V-1)
+    check = [1]+[0]*(V-1)
+    # 시작정점과 연결된 정점들의 가중치를 D배열에 저장
+    for e, p in AL[0]:
+        D[e] = p
+    for _ in range(V-1):
+        # 방문하지 않은 정점 중 D배열 값이 가장 작은 정점 w 찾기
+        w_idx, w = V-1, D[V-1]
+        for i in range(V):
+            if not check[i]:
+                if D[i] < w:
+                    w_idx, w = i, D[i]
+        # w에 대해 방문표시
+        check[w_idx] = 1
+        # w의 인접정점에 대해 최단거리로 D배열 값 갱신
+        for e, p in AL[w_idx]:
+            D[e] = min(D[e], D[w_idx]+p)
+
+    print("#%d %s" % (t, ' '.join(map(str, D))))
