@@ -2251,3 +2251,17 @@ for t in range(1, T+1):
                 if j in AL[i] and k in AL[j] and i in AL[k]:
                     cnt += 1
     print("#%d %d" % (t, cnt))
+
+# 3304. 최장 공통 부분 수열(LCS)
+# DP! 잘 모르겠어서 풀이 참고해서 풂. LCS 개념 다시 정리하기
+T = int(input())
+for t in range(1, T+1):
+    N, M = input().split()
+    table = [[0]*(len(M)+1) for _ in range(len(N)+1)]
+    for r in range(1, len(N)+1):
+        for c in range(1, len(M)+1):
+            if N[r-1] == M[c-1]:
+                table[r][c] = table[r-1][c-1]+1
+            else:
+                table[r][c] = max(table[r-1][c], table[r][c-1])
+    print("#%d %d" % (t, table[-1][-1]))
