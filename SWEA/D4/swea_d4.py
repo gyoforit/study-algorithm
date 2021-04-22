@@ -853,3 +853,32 @@ for t in range(1, T+1):
     sorted(edges, key=lambda x: x[2])
     p = list(range(V + 1))
     print("#%d %d" % (t, kruskal(edges)))
+
+# 11959. [파이썬 S/W 문제해결 구현] 7일차 - 최소 이동 거리
+def dijkstra():
+    visited = [0]*(V+1)
+    D = [9876543219876]*(V+1)
+    visited[0] = 1
+    D[0] = 0
+    for e, w in AL[0]:
+        D[e] = w
+    for _ in range(V):
+        mn = 9876543219876
+        for i in range(V+1):
+            if D[i] < mn and not visited[i]:
+                mn, mn_idx = D[i], i
+
+        visited[mn_idx] = 1
+        for e, w in AL[mn_idx]:
+            D[e] = min(D[e], D[mn_idx]+w)
+
+    return D[V]
+
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AL = [[] for _ in range(V+1)]
+    for _ in range(E):
+        s, e, w = map(int, input().split())
+        AL[s].append((e, w))
+    print("#%d %d" % (t, dijkstra()))
