@@ -826,3 +826,30 @@ for t in range(1, T+1):
     mx = 0
     roles(0, 1)
     print("#%d %.6f" % (t, mx*100))
+
+# 210421
+# 11946. [파이썬 S/W 문제해결 구현] 7일차 - 최소 신장 트리
+# kruskal 알고리즘 연습
+def find_set(x):
+    while x != p[x]:
+        x = p[x]
+    return x
+
+def union(x, y):
+    p[find_set(y)] = find_set(x)
+
+def kruskal(arr):
+    cnt = 0
+    for s, e, w in arr:
+        if find_set(s) != find_set(e):
+            cnt += w
+            union(s, e)
+    return cnt
+
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    edges = [list(map(int, input().split())) for _ in range(E)]
+    sorted(edges, key=lambda x: x[2])
+    p = list(range(V + 1))
+    print("#%d %d" % (t, kruskal(edges)))
