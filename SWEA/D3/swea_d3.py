@@ -2234,3 +2234,20 @@ for t in range(1, T+1):
     N = int(input())
     table = [list(map(int, input().split())) for _ in range(N)]
     print("#%d %d" % (t, mincost(0, 0)))
+
+# 6057. 그래프의 삼각형
+T = int(input())
+for t in range(1, T+1):
+    V, E = map(int, input().split())
+    AL = [[] for _ in range(V+1)]
+    for _ in range(E):
+        s, e = map(int, input().split())
+        AL[s].append(e)
+        AL[e].append(s)
+    cnt = 0
+    for i in range(1, V):
+        for j in range(i+1, V+1):
+            for k in range(j+1, V+2):
+                if j in AL[i] and k in AL[j] and i in AL[k]:
+                    cnt += 1
+    print("#%d %d" % (t, cnt))
