@@ -2207,3 +2207,30 @@ for t in range(1, T+1):
     for i in range(1, len(p)):
         if p[i] == i: cnt += 1
     print("#%d %d" % (t, cnt))
+
+# 11947. [파이썬 S/W 문제해결 구현] 7일차 - 최소 비용
+# 다익스트라-BFS 짬뽕...?
+drc = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+def mincost(r, c):
+    D = [[987654321] * N for _ in range(N)]
+    D[r][c] = 0
+    queue = []
+    queue.append((r, c))
+    while queue:
+        tr, tc = queue.pop(0)
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0 <= nr < N and 0 <= nc < N:
+                tmp = 1
+                if table[nr][nc] > table[tr][tc]:
+                    tmp += table[nr][nc]-table[tr][tc]
+                if D[nr][nc] > D[tr][tc]+tmp:
+                    D[nr][nc] = D[tr][tc]+tmp
+                    queue.append((nr, nc))
+    return D[N-1][N-1]
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    table = [list(map(int, input().split())) for _ in range(N)]
+    print("#%d %d" % (t, mincost(0, 0)))
