@@ -2265,3 +2265,13 @@ for t in range(1, T+1):
             else:
                 table[r][c] = max(table[r-1][c], table[r][c-1])
     print("#%d %d" % (t, table[-1][-1]))
+
+# 5688. 세제곱근을 찾아라
+sample = dict()
+for i in range(1, 1000001):
+    sample[i**3] = i
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    result = sample.get(N, -1)
+    print("#%d %d" % (t, result))
