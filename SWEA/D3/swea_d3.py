@@ -2184,3 +2184,26 @@ T = int(input())
 for t in range(1, T + 1):
     N, M = map(int, input().split())
     print("#%d %d" % (t, calc(N)))
+
+# 11945. [파이썬 S/W 문제해결 구현] 6일차 - 그룹 나누기
+# 유니온 파인드 기본 문제
+def find_set(x):
+    while x != p[x]:
+        x = p[x]
+    return x
+
+def union(x, y):
+    p[find_set(y)] = find_set(x)
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    nums = list(map(int, input().split()))
+    p = list(range(N+1))
+    for i in range(0, len(nums), 2):
+        x, y = nums[i], nums[i+1]
+        union(x, y)
+    cnt = 0
+    for i in range(1, len(p)):
+        if p[i] == i: cnt += 1
+    print("#%d %d" % (t, cnt))
