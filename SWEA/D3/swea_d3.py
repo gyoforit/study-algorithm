@@ -2154,3 +2154,33 @@ for t in range(1, T+1):
     for i in range(1, N+1):
         DFS(i, 1)
     print("#%d %d" % (t, mx))
+
+# 210422
+# 11944. [파이썬 S/W 문제해결 구현] 6일차 - 연산
+'''
+DFS로 풀면 한가지 연산만 계속 해서 시간 초과 남
+따라서 BFS로 풀어야 한다!
+'''
+def calc(N):
+    memo = [0] * (10 ** 6 + 1)
+    queue = [0] * (10 ** 6 + 1)
+    wp, rp = 0, -1
+    queue[0] = (N, 0)
+    memo[N] = 1
+    while wp != rp:
+        rp += 1
+        target, cnt = queue[rp]
+        tmp = [target + 1, target - 1, target * 2, target - 10]
+        for t in tmp:
+            if t == M:
+                return cnt + 1
+            elif 0 < t <= 10 ** 6 and memo[t] == 0:
+                wp += 1
+                queue[wp] = (t, cnt + 1)
+                memo[t] = 1
+
+
+T = int(input())
+for t in range(1, T + 1):
+    N, M = map(int, input().split())
+    print("#%d %d" % (t, calc(N)))
