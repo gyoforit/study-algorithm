@@ -882,3 +882,23 @@ for t in range(1, T+1):
         s, e, w = map(int, input().split())
         AL[s].append((e, w))
     print("#%d %d" % (t, dijkstra()))
+
+# 210423
+# 7465. 창용 마을 무리의 개수
+def find_set(n):
+    while n != p[n]:
+        n = p[n]
+    return n
+
+def union(x, y):
+    p[find_set(y)] = find_set(x)
+
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    p = list(range(N+1))
+    for _ in range(M):
+        x, y = map(int, input().split())
+        union(x, y)
+    cnt = sum(p[i] == i for i in range(1, N+1))
+    print("#%d %d" % (t, cnt))
