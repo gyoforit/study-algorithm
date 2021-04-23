@@ -924,3 +924,43 @@ for t in range(1, T+1):
     N = int(input())
     grid = [list(map(int, input())) for _ in range(N)]
     print("#%d %d" % (t, BFS(0, 0)))
+
+# 1251. [S/W 문제해결 응용] 4일차 - 하나로
+'''
+전부 이어야 하니까 MST! 근데 개수가 많으니까 정렬이 필요 없는 prim 사용하기
+'''
+INF = 10**20
+def get_mincost(D, check):
+    mn, mn_idx = INF, INF
+    for i in range(N):
+        if not check[i] and mn > D[i]:
+            mn = D[i]
+            mn_idx = i
+    return mn_idx
+
+def prim(x):
+    check = [0]*N
+    D = [INF]*N
+    D[x] = 0
+    for _ in range(N):
+        i = get_mincost(D, check)
+        check[i] = 1
+        for e, w in AL[i]:
+            if not check[e]:
+                D[e] = min(D[e], w)
+    return D
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    col = list(map(int, input().split()))
+    row = list(map(int, input().split()))
+    E = float(input())
+    AL = [[] for _ in range(N)]
+    for i in range(N):
+        for j in range(i+1, N):
+            dis = (col[i]-col[j])**2+(row[i]-row[j])**2
+            AL[i].append((j, dis))
+            AL[j].append((i, dis))
+    result = round(sum(prim(0))*E)
+    print("#%d %d" % (t, result))
