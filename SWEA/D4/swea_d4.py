@@ -902,3 +902,25 @@ for t in range(1, T+1):
         union(x, y)
     cnt = sum(p[i] == i for i in range(1, N+1))
     print("#%d %d" % (t, cnt))
+
+# 1249. [S/W 문제해결 응용] 4일차 - 보급로
+drc = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+def BFS(r, c):
+    D = [[987654321]*N for _ in range(N)]
+    queue = [(r, c)]
+    D[r][c] = 0
+    while queue:
+        tr, tc = queue.pop(0)
+        for dr, dc in drc:
+            nr, nc = tr+dr, tc+dc
+            if 0<=nr<N and 0<=nc<N:
+                if D[nr][nc] > D[tr][tc]+grid[nr][nc]:
+                    D[nr][nc] = D[tr][tc]+grid[nr][nc]
+                    queue.append((nr, nc))
+    return D[-1][-1]
+
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())
+    grid = [list(map(int, input())) for _ in range(N)]
+    print("#%d %d" % (t, BFS(0, 0)))
