@@ -1,27 +1,28 @@
 import itertools
-from copy import deepcopy
-calc = {'+': lambda x,y: x+y,
-        '-': lambda x,y: x-y,
-        '*': lambda x,y: x*y}
 
-def separate(nums, opslist):
-    result = nums
-    for o in opslist:
-        for n in nums:
-            if o in n:
-                n = n.split(o)
-    return nums
-print(separate("100-200*300-500+20", ['*', '-', '+']))
-nums = "100-200*300-500+20"
-nums = nums.split('-')
-nums = nums[2].split('+')
-print(nums)
+def DFS(lv, expression, ops):
+    if lv == len(ops)-1:
+        return str(eval(expression))
+    tmp = ops[lv]
+    if tmp == '+':
+        result = '+'.join(DFS(lv+1, e, ops) for e in expression.split(tmp))
+    elif tmp == '-':
+        result = '-'.join(DFS(lv+1, e, ops) for e in expression.split(tmp))
+    elif tmp == '*':
+        result = '*'.join(DFS(lv+1, e, ops) for e in expression.split(tmp))
+    return str(eval(result))
 
-# def solution(expression):
-#     answer = 0
-#     ops = []
-#     for i in expression:
-#         if i in {'+', '-', '*'}:
-#             ops.append(i)
-#     pers = list(itertools.permutations(list(set(ops))))
-#     for p in pers:
+def solution(expression):
+    answer = 0
+    ops = []
+    for e in expression:
+        if e in {'+', '-', '*'}:
+            ops.append(e)
+    pers = list(itertools.permutations(list(set(ops))))
+    for p in pers:
+        result = abs(int(DFS(0, expression, p)))
+        answer = max(answer, result)
+    return answer
+
+# print(solution("100-200*300-500+20"))
+# print(solution("50*6-3*2"))
