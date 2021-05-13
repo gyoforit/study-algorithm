@@ -1,13 +1,12 @@
-def check(num):
-    i = num + 1
-    while True:
-        if 1 <= bin(num ^ i).count('1') <= 2:
-            return i
-        i += 1
-
-
-def solution(numbers):
-    answer = []
-    for number in numbers:
-        answer.append(check(number))
+def solution(left, right):
+    answer = 0
+    for num in range(left, right+1):
+        cnt = 0
+        for i in range(1, num+1):
+            if not num % i:
+                cnt += 1
+        if cnt % 2:
+            answer -= num
+        else:
+            answer += num
     return answer
