@@ -1,10 +1,14 @@
 # 핵심: DFS를 돌리고 난 후 원래 값으로 되돌리기(다음 턴을 위해서) + 리스트 복사
 import copy
+
 drc = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-# sr, sc = 현재 이동중인 감염자들의 마을 좌표 / r, c = 이동 중인 마을 감염자들의 현재 위치
+# sr, sc = 현재 이동 중인 감염자들의 마을 좌표 / r, c = 이동 중인 마을 감염자들의 현재 위치
 def DFS(sr, sc, r, c, cnt):
     global min_tmp, copy_town
+    # 가지치기: 해당 경로에서의 누적 추가 감염자가 이미 최솟값 이상이라면 더 이상 탐색할 의미가 없으므로 리턴
+    if cnt >= min_tmp:
+        return
     # 병원이라면 최솟값 갱신 + town의 상태를 copy_town에 복사 (최솟값 경신될 때마다 계속 바뀜)
     if town[r][c] == -1:
         if cnt < min_tmp:
@@ -31,10 +35,10 @@ def DFS(sr, sc, r, c, cnt):
                     town[nr][nc] = town[sr][sc]
                     visited[nr][nc] = 1
                     DFS(sr, sc, nr, nc, cnt+tmp)
-                    # DFS 보낸 다음 visited와 town 상태 원상 복귀
+                    # DFS 보낸 다음 visited와 town 상태 원상 복구
                     town[nr][nc] = backup
                     visited[nr][nc] = 0
-                # 가려는 곳의 확진자가 같거나 많다면 추가 감염자 없이 누적, DFS 보낸 다음 visited 상태 원상 복귀
+                # 가려는 곳의 확진자가 같거나 많다면 추가 감염자 없이 누적, DFS 보낸 다음 visited 상태 원상 복구
                 else:
                     visited[nr][nc] = 1
                     DFS(sr, sc, nr, nc, cnt)
@@ -44,8 +48,8 @@ T = int(input())
 for t in range(1, T+1):
     N = int(input())
     town = [list(map(int, input().split())) for _ in range(N)]
-    min_patients = 0
     visited = [[0]*N for _ in range(N)]
+    min_patients = 0
     for r in range(0, N):
         for c in range(0, N):
             if town[r][c] != -1:
@@ -57,3 +61,5 @@ for t in range(1, T+1):
                 town[r][c] = 0
 
     print("#%d %s" % (t, min_patients))
+
+
