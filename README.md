@@ -31,7 +31,13 @@
 
 **🚩 etc** [(바로가기)](https://github.com/gyoforit/study_algorithm/tree/master/etc)
 
-- 코딩테스트 책 문제, 기출 문제 등 기타 문제 풀이 및 코딩테스트 텍스트 리뷰
+- 코딩테스트 책 등 기타 문제 풀이 및 코딩테스트 텍스트 리뷰
+
+
+
+**🚩 programmers** [(바로가기)](https://github.com/gyoforit/study_algorithm/tree/master/programmers)
+
+- 프로그래머스 문제 및 카카오 기출 문제 풀이
 
 
 
