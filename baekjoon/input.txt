@@ -1,8 +1,16 @@
-7
-A B C
-B D .
-C E F
-E . .
-F . G
-D . .
-G . .
+15
+push 1
+push 2
+front
+back
+size
+empty
+pop
+pop
+pop
+size
+empty
+pop
+push 3
+empty
+front
